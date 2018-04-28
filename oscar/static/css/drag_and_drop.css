@@ -1,0 +1,237 @@
+.dnd-draggable {
+  min-width: 150px;
+  max-width: 500px;
+  min-height: 75px;
+  max-height: 500px;
+  float: left;
+  margin: 0 10px 10px 0;
+  border:1px solid black;
+  /* border-radius: 10px; */
+  background-color: #EEEEEE;
+  cursor: move;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.dnd-textbox{
+    background: transparent;
+    min-width: 100px;
+    min-height: 50px;
+    border: solid black;
+    border-radius: 5px;
+    border-width: thin;
+    width: 70%;
+    display: block;
+    margin-left: auto;
+    margin-top: 10px;
+    margin-right: auto;
+    margin-bottom: 10px;
+    /* display:table;
+    margin:auto; */
+    background-color: white;
+    cursor: text;
+}
+
+.dnd-textbox-student{
+    background: transparent;
+    min-width: 100px;
+    min-height: 50px;
+    border: solid black;
+    border-radius: 5px;
+    border-width: thin;
+    width: 70%;
+    display: block;
+    margin-left: auto;
+    margin-top: 10px;
+    margin-right: auto;
+    margin-bottom: 10px;
+    background-color: white;
+    text-align: center;
+    cursor: default;
+}
+
+#containment-wrapper {
+  padding: 5px;
+  width:200%;
+  height:600px;
+  border:2px solid black;
+  margin-top: 35px;
+  margin-bottom: 20px;
+  background-color: #CFD8DC;
+  border-radius: 5px;
+  position: relative;
+  transform: translateX(-50%);
+  left: 50%;
+}
+
+.dnd-btn-del {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  border: 1px solid #080808;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  padding: 2px;
+}
+
+.dnd-btn-del:hover {
+  background-color: #269abc
+}
+
+.dnd-btn-param {
+  position: absolute;
+  top: -7px;
+  right: 12px;
+  border: 1px solid #080808;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  padding: 2px;
+}
+
+.dnd-btn-param:hover {
+  background-color: #269abc
+}
+
+/* Dot shape origin
+.dnd-display-origin {
+    position: absolute;
+    top: -7px;
+    left: 48%;
+    height: 15px;
+    width: 15px;
+    border: 1px solid #080808;
+    background-color: #D02222;
+    border-radius: 50%;
+    display: inline-block;
+}*/
+
+/*Triangle shape origin*/
+.dnd-display-origin {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  height: 0px;
+  width: 0px;
+  border-top: 15px solid #080808;
+  border-right: 15px solid transparent;
+  display: inline-block;
+}
+
+.dnd-display-order {
+  position: absolute;
+  bottom: -37px;
+  border: 1px solid #080808;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  padding: 2px;
+  font-weight: bold;
+}
+
+/*set wrapper*/
+#left-set{
+  float: left;
+  width: 32%;
+  min-height: 18em;
+  padding: 1%;
+  background-color: #FFA726;
+  border-radius:10px;
+  height: 100%;
+ }
+
+#right-set{
+  float: right;
+  width: 32%;
+  min-height: 18em;
+  padding: 1%;
+  background-color: #42A5F5;
+  border-radius:10px;
+  height: 100%;
+}
+
+#upper-right-set{
+  position: relative;
+  top: 5px;
+  right: 5px;
+  float: right;
+  width: 32%;
+  min-height: 18em;
+  padding: 1%;
+  background-color: #42A5F5;
+  border-radius:10px;
+  height: 49%;
+}
+
+#down-right-set{
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  float: right;
+  width: 32%;
+  min-height: 18em;
+  padding: 1%;
+  background-color: #5C6BC0;
+  border-radius:10px;
+  height: 49%;
+}
+
+#upper-left-set{
+  position: relative;
+  top: 5px;
+  float: left;
+  width: 32%;
+  min-height: 18em;
+  padding: 1%;
+  background-color: #FFA726;
+  border-radius:10px;
+  height: 49%;
+}
+
+#down-left-set{
+  position: absolute;
+  bottom: 5px;
+  float: left;
+  width: 32%;
+  min-height: 18em;
+  padding: 1%;
+  background-color: #8D6E63;
+  border-radius:10px;
+  height: 49%;
+}
+
+/* The Pop up for adding a new box - (The Modal) */
+.dnd-modal {
+   display: none; /* Hidden by default */
+   position: fixed; /* Stay in place */
+   z-index: 1; /* Sit on top */
+   left: 0;
+   top: 0;
+   width: 100%; /* Full width */
+   height: 100%; /* Full height */
+   overflow: auto; /* Enable scroll if needed */
+   background-color: rgb(0,0,0); /* Fallback color */
+   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.dnd-modal-content {
+   background-color: #fefefe;
+   margin: 15% auto; /* 15% from the top and centered */
+   padding: 20px;
+   border: 1px solid #888;
+   width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.dnd-close {
+   color: #aaa;
+   float: right;
+   font-size: 28px;
+   font-weight: bold;
+}
+
+.dnd-close:hover,
+.dnd-close:focus {
+   color: black;
+   text-decoration: none;
+   cursor: pointer;
+}

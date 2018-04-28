@@ -1,0 +1,30 @@
+-load static
+
+.form-group
+  %label.control-label.col-sm-2 Type de canvas
+  .col-sm-9
+    %select.form-control{ng-model: "question.canva.type", ng-required: "true", ng-change: "changeCanva(question)", id: "selectCanva"}
+      %option{value: "ranking"} Classement
+      %option{value: "2-set"} 2-Ensemble
+      %option{value: "4-set"} 4-Ensemble
+      %option{value: "graduateLine"} Ligne graduée
+
+.form-group
+  .col-sm-1
+  %button.btn.btn-success.add-question{ng-click: "createInput(0, topIndex, question)", type: "button", id:"addBox"}
+    %span.glyphicon.glyphicon-plus
+    Text
+
+  %button.btn.btn-success.add-question{ng-click: "createInput(1, topIndex, question)", type: "button", id:"addBox"}
+    %span.glyphicon.glyphicon-plus
+    Math
+
+  %button.btn.btn-success.add-question{ng-click: "createInput(2, topIndex, question)", type: "button", id:"addBox"}
+    %span.glyphicon.glyphicon-plus
+    Image
+
+  %button.btn.btn-success.add-question{ng-click: "boxInfoDisplay(null)", type: "button", id:"addBoxGeneral"}
+    %span.glyphicon.glyphicon-plus
+    Perso
+
+#wrapper
