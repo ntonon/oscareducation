@@ -93,6 +93,9 @@
                     %option{value: "checkbox"} Question à choix multiples (checkbox)
                     %option{value: "graph"} Réponse sur un graphique
                     %option{value: "professor"} Réponse corrigée par le professeur
+                    %option{value: "drag-and-drop"} Question drag and drop
+              .form-group{ng-if : "question.type == \"drag-and-drop\""}
+                -include "examinations/drag_and_drop.haml"
               .form-group
                 %label.control-label.col-sm-2 Source(s)
                 .col-sm-10
@@ -102,7 +105,7 @@
                 .col-sm-10
                   %input.form-control{type: "text", ng-model: "question.indication", ng-required: "false"}
             %ul.list-group
-              %li.list-group-item{ng-if: "question.type != \"professor\"", ng-repeat: "answer in question.answers", ng-init: "answerIndex = $index.toString()"}
+              %li.list-group-item{ng-if: "question.type != \"professor\" && question.type != \"drag-and-drop\"", ng-repeat: "answer in question.answers", ng-init: "answerIndex = $index.toString()"}
                 .form-horizontal{ng-if: "question.type != \"graph\""}
                   .form-group
                     %label.col-sm-2.control-label Réponse possible :

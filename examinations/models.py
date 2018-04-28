@@ -217,6 +217,10 @@ class Question(models.Model):
             # All the correct answers are selected, all the incorrect ones not selected
             return 1
 
+        elif evaluation_type == "drag-and-drop":
+
+            return 1
+
         elif evaluation_type == "professor":
             # No automatic verification to perform if corrected by a Professor
             return -1

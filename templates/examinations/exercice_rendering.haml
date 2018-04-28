@@ -1,4 +1,9 @@
+-extends "base.haml"
 -load lesson_tags
+-load static
+
+-block javascript
+  %script{type: "text/javascript", src: "{% static 'js/drag_and_drop.js' %}"}
 
   %form{method: "POST"}
     -csrf_token
@@ -42,6 +47,15 @@
           -elif answer.type == "professor"
             %input.form-control{id: "{{ forloop.counter0 }}", name: "{{ forloop.counter0 }}", type: "text", autocomplete: "off"}
             -#%textarea.form-control{id: "{{ forloop.counter0 }}", name: "{{ forloop.counter0 }}", rows: "5"}
+          -elif answer.type == "drag-and-drop"
+            -with toploop_counter0=forloop.counter0
+              =answer
+              #wrapper
+              :javascript
+                changeCanva("{{ answer.canva.type | safe }}","{{ answer.canva.upLeftSetName | safe }}","{{ answer.canva.upRightSetName | safe }}","{{ answer.canva.downLeftSetName | safe }}","{{ answer.canva.downRightSetName | safe }}");
+              -for ans in answer.answers
+                :javascript
+                  createInput("{{ ans.type | safe }}", "{{ ans.text | safe }}", "{{ ans.latex | safe }}", "{{ ans.ancer | safe }}");
           -else
             =answer.type
 
