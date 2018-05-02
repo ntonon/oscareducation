@@ -182,8 +182,11 @@ def validate_exercice(request, test_student, test_exercice):
 
                 raw_answer[number]["response"] = graph_list
             elif data["type"] == "drag-and-drop":
-                raw_answer[number]["response"] = [request.POST[str(number)]]
-                # for box in question.get_answers():
+                num = 0
+                raw_answer[number]["response"] = []
+                for box in question.get_answers():
+                    raw_answer[number]["response"].append({"response": request.POST.get("dnd-"+str(number)+"-"+str(num)), "correct":-1})
+                    num += 1
             elif data["type"] == "professor":
                 raw_answer[number]["response"] = [request.POST[str(number)]]
             else:

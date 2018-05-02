@@ -49,10 +49,9 @@
             -#%textarea.form-control{id: "{{ forloop.counter0 }}", name: "{{ forloop.counter0 }}", rows: "5"}
           -elif answer.type == "drag-and-drop"
             -with toploop_counter0=forloop.counter0
-              =answer
               #wrapper
               :javascript
-                changeCanva("{{ answer.canva.type | safe }}","{{ answer.canva.upLeftSetName | safe }}","{{ answer.canva.upRightSetName | safe }}","{{ answer.canva.downLeftSetName | safe }}","{{ answer.canva.downRightSetName | safe }}");
+                changeCanva("{{ toploop_counter0 }}","{{ answer.canva.type | safe }}","{{ answer.canva.upLeftSetName | safe }}","{{ answer.canva.upRightSetName | safe }}","{{ answer.canva.downLeftSetName | safe }}","{{ answer.canva.downRightSetName | safe }}");
               -for ans in answer.answers
                 :javascript
                   createInput("{{ ans.type | safe }}", "{{ ans.text | safe }}", "{{ ans.latex | safe }}", "{{ ans.ancer | safe }}");

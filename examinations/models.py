@@ -219,7 +219,20 @@ class Question(models.Model):
 
         elif evaluation_type == "drag-and-drop":
 
-            return 1
+            answers = raw_correct_answers["answers"]
+            success = 1
+
+            num=0
+            for res in response:
+                if res["response"].encode('UTF-8') == str(answers[num]["order"]):
+                    response[num]["correct"] = 1
+                else:
+                    response[num]["correct"] = 0
+                    success = 0
+                num+=1
+
+
+            return success
 
         elif evaluation_type == "professor":
             # No automatic verification to perform if corrected by a Professor

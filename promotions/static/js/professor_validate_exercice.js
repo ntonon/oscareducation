@@ -154,7 +154,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
       if(pos=="right"){
         $input = $('<input id="rightSetName" type="text" placeholder="nom de l\'ensemble" class="form-control"> </input>').change(function(){question.canva.upRightSetName=this.value});
-        $set = $('<div id="right-set" class="ui-widget-content ui-state-default "> <div id='+pos+' class="form-group input-group col-xs-4"> </div> </div>').droppable({
+        $set = $('<div id="right-set" class="ui-widget-content ui-state-default "> <div id='+pos+'> </div> </div>').droppable({
           accept: ".dnd-draggable",
           classes: {
             "ui-droppable-hover": "ui-state-hover"
@@ -172,7 +172,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       }
       else if (pos == "left") {
         $input = $('<input id="leftSetName" type="text" placeholder="nom de l\'ensemble" class="form-control"> </input>').change(function(){question.canva.upLeftSetName=this.value});
-        $set = $('<div id="left-set" class="ui-widget-content ui-state-default "> <div id='+pos+' class="form-group input-group col-xs-4"> </div> </div>').droppable({
+        $set = $('<div id="left-set" class="ui-widget-content ui-state-default "> <div id='+pos+'> </div> </div>').droppable({
           accept: ".dnd-draggable",
           classes: {
             "ui-droppable-hover": "ui-state-hover"
@@ -189,7 +189,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       }
       else if (pos == "upperRight") {
         $input = $('<input id="upRightSetName" type="text" placeholder="nom de l\'ensemble" class="form-control"> </input>').change(function(){question.canva.upRightSetName=this.value});
-        $set = $('<div id="upper-right-set" class="ui-widget-content ui-state-default "> <div id='+pos+' class="form-group input-group col-xs-4"> </div> </div>').droppable({
+        $set = $('<div id="upper-right-set" class="ui-widget-content ui-state-default "> <div id='+pos+'> </div> </div>').droppable({
           accept: ".dnd-draggable",
           classes: {
             "ui-droppable-hover": "ui-state-hover"
@@ -206,7 +206,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       }
       else if (pos == "upperLeft") {
         $input = $('<input id="upleftSetName" type="text" placeholder="nom de l\'ensemble" class="form-control"> </input>').change(function(){question.canva.upLeftSetName=this.value});
-        $set = $('<div id="upper-left-set" class="ui-widget-content ui-state-default "> <div id='+pos+' class="form-group input-group col-xs-4"> </div> </div>').droppable({
+        $set = $('<div id="upper-left-set" class="ui-widget-content ui-state-default "> <div id='+pos+'> </div> </div>').droppable({
           accept: ".dnd-draggable",
           classes: {
             "ui-droppable-hover": "ui-state-hover"
@@ -223,7 +223,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       }
       else if (pos == "downRight") {
         $input = $('<input id="downRightSetName" type="text" placeholder="nom de l\'ensemble" class="form-control"> </input>').change(function(){question.canva.downRightSetName=this.value});
-        $set = $('<div id="down-right-set" class="ui-widget-content ui-state-default "> <div id='+pos+' class="form-group input-group col-xs-4"> </div> </div>').droppable({
+        $set = $('<div id="down-right-set" class="ui-widget-content ui-state-default "> <div id='+pos+'> </div> </div>').droppable({
           accept: ".dnd-draggable",
           classes: {
             "ui-droppable-hover": "ui-state-hover"
@@ -240,7 +240,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       }
       else if (pos == "downLeft") {
         $input = $('<input id="downLeftSetName" type="text" placeholder="nom de l\'ensemble" class="form-control"> </input>').change(function(){question.canva.downLeftSetName=this.value});
-        $set = $('<div id="down-left-set" class="ui-widget-content ui-state-default "> <div id='+pos+' id= class="form-group input-group col-xs-4"> </div> </div>').droppable({
+        $set = $('<div id="down-left-set" class="ui-widget-content ui-state-default "> <div id='+pos+'> </div> </div>').droppable({
           accept: ".dnd-draggable",
           classes: {
             "ui-droppable-hover": "ui-state-hover"
