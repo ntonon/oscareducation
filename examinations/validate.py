@@ -89,7 +89,7 @@ def validate_exercice_yaml_structure(exercice):
 
         elif data["type"] == "drag-and-drop":
             if len(data["answers"]) == 0:
-                return (u'Une question doit avoir au moins avoir un block (cliquez sur le "+" pour en ajouter)')
+                return (u'Une question doit au moins avoir un block (cliquez sur le "+" pour en ajouter)')
 
             for answer in data["answers"]:
                 if answer["type"] not in ["text", "latex", "image"]:

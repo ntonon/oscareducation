@@ -62,9 +62,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         stack: ".dnd-draggable",
         stop: function() {
           $scope.order(question);
-          question["answers"][number]["left"] = $(this).position().left;
-          question["answers"][number]["top"] = $(this).position().top;
-          }
+        }
       });
 
       $block = $block.resizable({
@@ -147,16 +145,12 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
     //Change the canva when the user select a new one
     $scope.changeCanva = function(question) {
       question["answers"]=[];
+      document.getElementById("containment-wrapper").remove();
 
-      if(canva != "") {
-        document.getElementById("containment-wrapper").remove();
-      }
-      else {
-        document.getElementById("addBlockText").style.display = "inline-block";
-        document.getElementById("addBlockMath").style.display = "inline-block";
-        document.getElementById("addBlockImage").style.display = "inline-block";
-        document.getElementById("addBlockGeneral").style.display = "inline-block";
-      }
+      document.getElementById("addBlockText").style.display = "inline-block";
+      document.getElementById("addBlockMath").style.display = "inline-block";
+      document.getElementById("addBlockImage").style.display = "inline-block";
+      document.getElementById("addBlockGeneral").style.display = "inline-block";
 
       canva = document.getElementById("selectCanva").value;
       $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
@@ -378,10 +372,14 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
       if(ancerValue) {
         question["answers"][number]["ancer"] = "true";
+        question["answers"][number]["left"] = $block.position().left;
+        question["answers"][number]["top"] = $block.position().top;
         $block.draggable("disable");
       }
       else {
         question["answers"][number]["ancer"] = "false";
+        question["answers"][number]["left"] = "";
+        question["answers"][number]["top"] = "";
         $block.draggable("enable");
       }
 

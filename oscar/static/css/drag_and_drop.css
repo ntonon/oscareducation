@@ -52,6 +52,7 @@
   border-radius: 5px;
   border-width: thin;
   cursor: default;
+  text-align:center;
   resize: none;
   overflow:hidden;
 }
@@ -145,11 +146,10 @@
   right: 5px;
   float: right;
   width: 32%;
-  min-height: 18em;
   padding: 1%;
   background-color: #42A5F5;
   border-radius:10px;
-  height: 49%;
+  height: 43%;
 }
 
 #down-right-set{
@@ -158,11 +158,10 @@
   right: 5px;
   float: right;
   width: 32%;
-  min-height: 18em;
   padding: 1%;
   background-color: #5C6BC0;
   border-radius:10px;
-  height: 49%;
+  height: 43%;
 }
 
 #upper-left-set{
@@ -170,11 +169,10 @@
   top: 5px;
   float: left;
   width: 32%;
-  min-height: 18em;
   padding: 1%;
   background-color: #FFA726;
   border-radius:10px;
-  height: 49%;
+  height: 43%;
 }
 
 #down-left-set{
@@ -182,11 +180,10 @@
   bottom: 5px;
   float: left;
   width: 32%;
-  min-height: 18em;
   padding: 1%;
   background-color: #8D6E63;
   border-radius:10px;
-  height: 49%;
+  height: 43%;
 }
 
 /* The Pop up for adding a new box - (The Modal) */

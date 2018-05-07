@@ -7,11 +7,28 @@ var numQuest;
 //Create a draggable div and push it to tab
 function createInput(type,text,latex,hint,ancer,width,height,top,left){
   var number = counter; //The number of the new block being added
+  var $inputDisplay;
 
-  var $neworder = $('<p id=order'+number+' class="dnd-display-order" style="min-width:15px; min-height:15px;"> </p>');//order of the box (varies according to the canva)
-  var $newrequest = $('<input id=dnd-'+numQuest+'-'+number+' name=dnd-'+numQuest+'-'+number+' style="display: none;"> </p>');
-  var $originButton = $('<span class="dnd-display-origin"></span>');
-  var $new = $('<div id=draggable'+number+' type="text" class="dnd-draggable ui-widget-content" set="center"> </div>').draggable({
+  switch(type){
+    case "text":
+      $inputDisplay = $('<textarea type='+type+' class="dnd-textbox-student" id=textbox'+number+' disabled="disabled"></textarea>');
+      $inputDisplay.val(text);
+      break;
+
+    case "latex":
+      $inputDisplay = $('<textarea type='+type+' class="dnd-textbox-student" id=textbox'+number+' disabled="disabled"> </textarea>');
+      $inputDisplay.val(latex);
+      break;
+
+    case "image":
+      //image
+      break;
+  }
+
+  var $orderDisplay = $('<p id=order'+number+' class="dnd-display-order"> </p>');//order of the box (varies according to the canva)
+  var $request = $('<input id=dnd-'+numQuest+'-'+number+' name=dnd-'+numQuest+'-'+number+' style="display: none;"> </p>');
+
+  var $block = $('<div id=draggable'+number+' type="text" class="dnd-draggable ui-widget-content" set="center"> </div>').draggable({
     containment: "#containment-wrapper",
     scroll: false,
     stack: ".dnd-draggable",
@@ -20,137 +37,139 @@ function createInput(type,text,latex,hint,ancer,width,height,top,left){
     }
   });
 
-  var $newinput;
-  switch(type){
-    case "text":
-      $newinput = $('<input type='+type+' class="dnd-textbox-student" id=textbox'+number+' value='+text+' disabled="disabled"></input>');
-      break;
-    case "latex":
-      $newinput = $('<input type='+type+' class="dnd-textbox-student" id=textbox'+number+' value='+latex+' disabled="disabled"> </input>');
-      break;
-    case "image":
-      //image
-  }
+  //Append of the elements to the div block
+  $inputDisplay.appendTo($block);
+  $orderDisplay.appendTo($block);
+  $request.appendTo($block);
 
-  //append of the elements to the div block
-  $newinput.appendTo($new);
-  $neworder.appendTo($new);
-  $newrequest.appendTo($new);
-  $originButton.appendTo($new);
+  //Append of the div block to the container
+  $block.appendTo(document.getElementById("containment-wrapper"));
 
-  //append of the div block to the container
-  $new.appendTo(document.getElementById("containment-wrapper"));
-
-  var posTop = $new.parent().height()/3 + (Math.random()*($new.parent().height()/3)) -50;
-  var posLeft = $new.parent().width()/3 + (Math.random()*($new.parent().width()/3)) -50;
+  var posTop = $block.parent().height()/3 + (Math.random()*($block.parent().height()/3)) -50;
+  var posLeft = $block.parent().width()/3 + (Math.random()*($block.parent().width()/3)) -50;
 
   if(ancer == "true"){
-    $new.draggable("disable");
+    $block.draggable("disable");
     posTop = top;
     posLeft = left;
   }
 
-  $new.parent().css({position: 'relative'});
-  $new.css({'width': width, 'height': height, 'top': posTop+'px', 'left': posLeft+'px', 'position': 'absolute'});
+  $block.parent().css({position: 'relative'});
+  $block.css({'width': width, 'height': height, 'top': posTop+'px', 'left': posLeft+'px', 'position': 'absolute'});
 
   counter++;
   num++;
 
-  //we put the block in the tab
-  tab.push($new);
+  if(canva == "2-set") {
 
-  order();
+  }
+
+  if(canva == "4-set") {
+
+  }
+
+  //We put the block in the tab
+  tab.push($block);
+
+  if(canva == "2-set") {
+    $("#left-set").trigger("over", [$block]);
+    $("#right-set").trigger("over", [$block]);
+  }
+  else if(canva == "4-set") {
+    $("#upper-left-set").trigger("over", [$block]);
+    $("#upper-right-set").trigger("over", [$block]);
+    $("#down-left-set").trigger("over", [$block]);
+    $("#down-right-set").trigger("over", [$block]);
+  }
+  else {
+    order();
+  }
 }
 
-// varies according to the changeCanva
-// if it's ranking, it will display the rank of each block on their order element
-// if it's set, it will display the set of each block on their set element
-function order(){
-    if(canva == "ranking"){
-        tab.sort(function(a,b){return (a.position().left-b.position().left)+(a.position().top-b.position().top) });
-
-        for (var i = 0; i < num; i++){
-          var elementid = tab[i].attr('id').slice(9);
-          document.getElementById("order"+elementid).innerHTML=i;
-          document.getElementById("dnd-"+numQuest+"-"+elementid).value = i;
-        }
+//It varies according to the changeCanva
+//If it's ranking, it will display the rank of each block on their order element
+//If it's set, it will display the set of each block on their set element
+function order() {
+  if(canva == "ranking") {
+    tab.sort(function(a,b){return (a.position().left-b.position().left)+(a.position().top-b.position().top);});
+    for (var i = 0; i < num; i++) {
+      var number = tab[i].attr('id').slice(9);
+      $("#order"+number).html(i);
+      $("#dnd-"+numQuest+"-"+number).val(i);
     }
-    else if(canva=="2-set" || canva=="4-set"){
-        for (var i = 0; i < num; i++) {
-            var elementid = tab[i].attr('id').slice(9);
-            var element = document.getElementById("draggable"+elementid);
-            var set = element.getAttribute("set");
-            document.getElementById("dnd-"+numQuest+"-"+elementid).value = set;
-        //document.getElementById("order"+elementid).innerHTML=set;
-        }
+  }
+  else if(canva=="2-set" || canva=="4-set") {
+    for (var i = 0; i < num; i++) {
+      var elementid = tab[i].attr('id').slice(9);
+      $("#dnd-"+numQuest+"-"+elementid).val($("#draggable"+number).attr('set'));
     }
+  }
 }
 
-//change the canva when the user select a new one
+//Change the canva according to the type
 function changeCanva(toploop,canvaType,upLeftSetName,upRightSetName,downLeftSetName,downRightSetName){
-    canva = canvaType;
-    numQuest = toploop;
+  canva = canvaType;
+  numQuest = toploop;
 
-    $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
+  $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
 
-    if(canva == "2-set"){
-        var $rightSet = createSet("right",upRightSetName);
-        var $leftSet = createSet("left",upLeftSetName);
-        $leftSet.appendTo(document.getElementById("containment-wrapper"));
-        $rightSet.appendTo(document.getElementById("containment-wrapper"));
-    }
-    else if(canva == "4-set"){
-        var $upRightSet = createSet("upperRight",upRightSetName);
-        var $upLeftSet = createSet("upperLeft",upLeftSetName);
-        var $downRightSet = createSet("downRight",downRightSetName);
-        var $downLeftSet = createSet("downLeft",downLeftSetName);
-
-        $upRightSet.appendTo(document.getElementById("containment-wrapper"));
-        $upLeftSet.appendTo(document.getElementById("containment-wrapper"));
-        $downRightSet.appendTo(document.getElementById("containment-wrapper"));
-        $downLeftSet.appendTo(document.getElementById("containment-wrapper"));
-    }
-    else if (canva == "graduateLine") {
-        document.getElementById("containment-wrapper").style.backgroundColor = "white";
-    }
+  if(canva == "2-set") {
+    createSet("right",upRightSetName);
+    createSet("left",upLeftSetName);
+  }
+  else if(canva == "4-set") {
+    createSet("upperRight",upRightSetName);
+    createSet("upperLeft",upLeftSetName);
+    createSet("downRight",downRightSetName);
+    createSet("downLeft",downLeftSetName);
+  }
+  else if (canva == "graduateLine") {
+    document.getElementById("containment-wrapper").style.backgroundColor = "white";
+  }
 }
 
-//create set for set exercice
-function createSet(pos,name){
-  if(pos=="right"){
-    var set = $('<div id="right-set" class="ui-widget-content ui-state-default "> <div> <input id="rightSetName" type="text" class="form-control" disabled="disabled" value='+name+' style="text-align: center;"> </div> </div>').droppable({
+//Create set for set exercice
+function createSet(pos,name) {
+  var $set;
+  var $input;
+  if(pos=="right") {
+    $input = $('<input id="rightSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" value='+name+' style="text-align: center;" disabled="disabled"> </input>')
+    $set = $('<div id="right-set" class="ui-widget-content ui-state-default"> <div id='+pos+'> </div> </div>').droppable({
       accept: ".dnd-draggable",
       classes: {
         "ui-droppable-hover": "ui-state-hover"
       },
-      over: function(event, ui){
+      over: function(event, ui) {
         ui.draggable[0].setAttribute("set","right");
         ui.draggable[0].getElementsByClassName("dnd-display-order")[0].style.background = "#90CAF9";
       },
-      out: function(event, ui){
+      out: function(event, ui) {
         ui.draggable[0].setAttribute("set","center");
         ui.draggable[0].getElementsByClassName("dnd-display-order")[0].style.background = "white";
       }
     });
+    $input.appendTo()
   }
   else if (pos == "left") {
-    var set = $('<div id="left-set" class="ui-widget-content ui-state-default "> <div> <input id="leftSetName" class="form-control" disabled="disabled" value='+name+' style="text-align: center;"> </div> </div>').droppable({
+    $input = $('<input id="leftSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" value='+name+' style="text-align: center;" disabled="disabled"> </input>')
+    $set = $('<div id="left-set" class="ui-widget-content ui-state-default"> <div id='+pos+'> </div> </div>').droppable({
       accept: ".dnd-draggable",
       classes: {
         "ui-droppable-hover": "ui-state-hover"
       },
-      over: function(event, ui){
+      over: function(event, ui) {
         ui.draggable[0].setAttribute("set","left");
         ui.draggable[0].getElementsByClassName("dnd-display-order")[0].style.background = "#FFCC80";
       },
-      out: function(event, ui){
+      out: function(event, ui) {
         ui.draggable[0].setAttribute("set","center");
         ui.draggable[0].getElementsByClassName("dnd-display-order")[0].style.background = "white";
       }
     });
   }
   else if (pos == "upperRight") {
-    var set = $('<div id="upper-right-set" class="ui-widget-content ui-state-default "> <div> <input id="leftSetName" type="text" class="form-control" disabled="disabled" value='+name+' style="text-align: center;"> </div> </div>').droppable({
+    $input = $('<input id="upRightSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" value='+name+' style="text-align: center;" disabled="disabled"> </input>')
+    $set = $('<div id="upper-right-set" class="ui-widget-content ui-state-default"> <div id='+pos+'> </div> </div>').droppable({
       accept: ".dnd-draggable",
       classes: {
         "ui-droppable-hover": "ui-state-hover"
@@ -159,59 +178,64 @@ function createSet(pos,name){
         ui.draggable[0].setAttribute("set","upperRight");
         ui.draggable[0].getElementsByClassName("dnd-display-order")[0].style.background = "#42A5F5";
       },
-      out: function(event, ui){
+      out: function(event, ui) {
         ui.draggable[0].setAttribute("set","center");
         ui.draggable[0].getElementsByClassName("dnd-display-order")[0].style.background = "white";
       }
     });
   }
   else if (pos == "upperLeft") {
-    var set = $('<div id="upper-left-set" class="ui-widget-content ui-state-default "> <div> <input id="leftSetName" type="text" class="form-control" disabled="disabled" value='+name+' style="text-align: center;"> </div> </div>').droppable({
-      accept: ".dnd-draggable",
+    $input = $('<input id="upleftSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" value='+name+' style="text-align: center;" disabled="disabled"> </input>')
+    $set = $('<div id="upper-left-set" class="ui-widget-content ui-state-default"> <div id='+pos+'> </div> </div>').droppable({
+    accept: ".dnd-draggable",
       classes: {
         "ui-droppable-hover": "ui-state-hover"
       },
-      over: function(event, ui){
+      over: function(event, ui) {
         ui.draggable[0].setAttribute("set","upperLeft");
         ui.draggable[0].getElementsByClassName("dnd-display-order")[0].style.background = "#FFA726";
       },
-      out: function(event, ui){
+      out: function(event, ui) {
         ui.draggable[0].setAttribute("set","center");
         ui.draggable[0].getElementsByClassName("dnd-display-order")[0].style.background = "white";
       }
     });
   }
   else if (pos == "downRight") {
-    var set = $('<div id="down-right-set" class="ui-widget-content ui-state-default "> <div> <input id="leftSetName" type="text" class="form-control" disabled="disabled" value='+name+' style="text-align: center;"> </div> </div>').droppable({
+    $input = $('<input id="downRightSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" value='+name+' style="text-align: center;" disabled="disabled"> </input>')
+    $set = $('<div id="down-right-set" class="ui-widget-content ui-state-default"> <div id='+pos+'> </div> </div>').droppable({
       accept: ".dnd-draggable",
       classes: {
         "ui-droppable-hover": "ui-state-hover"
       },
-      over: function(event, ui){
+      over: function(event, ui) {
         ui.draggable[0].setAttribute("set","downRight");
         ui.draggable[0].getElementsByClassName("dnd-display-order")[0].style.background = "#5C6BC0";
       },
-      out: function(event, ui){
+      out: function(event, ui) {
         ui.draggable[0].setAttribute("set","center");
         ui.draggable[0].getElementsByClassName("dnd-display-order")[0].style.background = "white";
       }
     });
   }
   else if (pos == "downLeft") {
-    var set = $('<div id="down-left-set" class="ui-widget-content ui-state-default "> <div> <input id="leftSetName" type="text" class="form-control" disabled="disabled" value='+name+' style="text-align: center;"> </div> </div>').droppable({
+    $input = $('<input id="downLeftSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" value='+name+' style="text-align: center;" disabled="disabled"> </input>')
+    $set = $('<div id="down-left-set" class="ui-widget-content ui-state-default"> <div id='+pos+'> </div> </div>').droppable({
       accept: ".dnd-draggable",
       classes: {
         "ui-droppable-hover": "ui-state-hover"
       },
-      over: function(event, ui){
+      over: function(event, ui) {
         ui.draggable[0].setAttribute("set","downLeft");
         ui.draggable[0].getElementsByClassName("dnd-display-order")[0].style.background = "#8D6E63";
       },
-      out: function(event, ui){
+      out: function(event, ui) {
         ui.draggable[0].setAttribute("set","center");
-        ui.draggable[0].getElementsByClassName("dnd-display-order")[0].style.background = "white";
+        ui.draggable[0].getElementsByClassName("dnd-display-order")[0].style.background = "white";;
       }
     });
   }
-  return set;
+
+  $set.appendTo(document.getElementById("containment-wrapper"));
+  $input.appendTo(document.getElementById(pos));
 }
