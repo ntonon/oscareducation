@@ -1411,7 +1411,7 @@ def exercice_validation_form_validate_exercice(request):
             questions[question["instructions"]] = {
                 "type": question["type"],
                 "canva": question["canva"],
-                "answers": question["answers"],
+                "answers": [a for a in question["answers"] if len(a) > 2],
             }
 
         else:
@@ -1559,7 +1559,7 @@ def exercice_validation_form_submit(request, pk=None):
                 new_question_answers = {
                     "type": question["type"],
                     "canva": question["canva"],
-                    "answers": question["answers"],
+                    "answers": [a for a in question["answers"] if len(a) > 2],
                 }
 
             else:

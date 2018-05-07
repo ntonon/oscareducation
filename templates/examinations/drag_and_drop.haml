@@ -11,20 +11,42 @@
 
 .form-group
   .col-sm-1
-  %button.btn.btn-success.add-question{ng-click: "createInput(0, topIndex, question)", type: "button", id:"addBox"}
+  %button.btn.btn-success.add-question{ng-click: "createDraggableBlock(0, question, topIndex)", type: "button", id:"addBlockText", style:"display: none;"}
     %span.glyphicon.glyphicon-plus
     Text
 
-  %button.btn.btn-success.add-question{ng-click: "createInput(1, topIndex, question)", type: "button", id:"addBox"}
+  %button.btn.btn-success.add-question{ng-click: "createDraggableBlock(1, question, topIndex)", type: "button", id:"addBlockMath", style:"display: none;"}
     %span.glyphicon.glyphicon-plus
     Math
 
-  %button.btn.btn-success.add-question{ng-click: "createInput(2, topIndex, question)", type: "button", id:"addBox"}
+  %button.btn.btn-success.add-question{ng-click: "createDraggableBlock(2, question, topIndex)", type: "button", id:"addBlockImage", style:"display: none;"}
     %span.glyphicon.glyphicon-plus
     Image
 
-  %button.btn.btn-success.add-question{ng-click: "boxInfoDisplay(null)", type: "button", id:"addBoxGeneral"}
+  %button.btn.btn-success.add-question{ng-click: "openBlockInfoDisplay(-1,question, topIndex)", type: "button", id:"addBlockGeneral", style:"display: none;"}
     %span.glyphicon.glyphicon-plus
     Perso
+
+#BlockInfo.dnd-modal
+  .dnd-modal-content
+    %span.dnd-close{ng-click: "closeBlockInfoDisplay()"} ×
+    #BlockInfoForm
+      .form-group
+        %label{for: "TypeBlockInfo"} Type de texte :
+        %select#TypeBlockInfo.form-control{placeholder: "Type de texte"}
+          %option{value: "text"} Texte simple
+          %option{value: "latex"} Texte mathématique (Latex)
+          %option{value: "image"} Image
+      .form-group
+        %label{for: "TextBlockInfo"} Texte :
+        %input#TextBlockInfo.form-control{placeholder: "Texte de la boite", type: "text"}/
+      .form-group
+        %label{for: "HintBlockInfo"} Indication(s) pour l'étudiant en cas de mauvaise réponse:
+        %input#HintBlockInfo.form-control{placeholder: "Indication(s)", type: "text"}/
+      .form-group
+        .form-check
+          %label.form-check-label{for: "AncerBlockInfo"} Ancrage de la boite
+          %input#AncerBlockInfo.form-check-input{type :"checkbox"}/
+      %a#ValidateBlockInfo.btn.btn-primary Valider
 
 #wrapper

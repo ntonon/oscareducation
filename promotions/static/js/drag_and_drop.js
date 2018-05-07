@@ -1,24 +1,12 @@
-var counter = 0; //number of boxes added to the canva
-var num = 0; //number of boxes displayed on the canva
-
-var tab = []; //the displayed boxes on the canva
-var canva;
+var counter = 0;//Number of blockes added to the canva
+var num = 0; //Number of blockes displayed on the canva
+var tab = []; //The displayed blockes on the canva
+var canva = "" //The canva type
 var numQuest;
 
-/*
-type: type, //start as text by default
-text: "",
-latex: "",
-ancer: false,
-height: "75px",
-width: "150px",
-position: "",
-order: ""
-*/
-
-// create a draggable div and push it to tab
-function createInput(type,text,latex,ancer,toploop){
-  var number = counter;
+//Create a draggable div and push it to tab
+function createInput(type,text,latex,hint,ancer,width,height,top,left){
+  var number = counter; //The number of the new block being added
 
   var $neworder = $('<p id=order'+number+' class="dnd-display-order" style="min-width:15px; min-height:15px;"> </p>');//order of the box (varies according to the canva)
   var $newrequest = $('<input id=dnd-'+numQuest+'-'+number+' name=dnd-'+numQuest+'-'+number+' style="display: none;"> </p>');
@@ -26,7 +14,8 @@ function createInput(type,text,latex,ancer,toploop){
   var $new = $('<div id=draggable'+number+' type="text" class="dnd-draggable ui-widget-content" set="center"> </div>').draggable({
     containment: "#containment-wrapper",
     scroll: false,
-    drag: function(){
+    stack: ".dnd-draggable",
+    stop: function(){
       order();
     }
   });
@@ -57,12 +46,12 @@ function createInput(type,text,latex,ancer,toploop){
 
   if(ancer == "true"){
     $new.draggable("disable");
-    posTop = answer.posTop;
-    posLeft = answer.posLeft;
+    posTop = top;
+    posLeft = left;
   }
 
   $new.parent().css({position: 'relative'});
-  $new.css({top: posTop+'px', left: posLeft+'px', position:'absolute'});
+  $new.css({'width': width, 'height': height, 'top': posTop+'px', 'left': posLeft+'px', 'position': 'absolute'});
 
   counter++;
   num++;

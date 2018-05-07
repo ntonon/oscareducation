@@ -89,11 +89,11 @@ def validate_exercice_yaml_structure(exercice):
 
         elif data["type"] == "drag-and-drop":
             if len(data["answers"]) == 0:
-                return (u'Une question doit avoir au moins un blanc (cliquez sur le "+" pour en ajouter)')
+                return (u'Une question doit avoir au moins avoir un block (cliquez sur le "+" pour en ajouter)')
 
             for answer in data["answers"]:
-                if answer["type"] not in ["text", "math-simple", "math-advanced"]:
-                    return (u'Le type de la question %s est illégal' %(question)).encode("Utf-8")
+                if answer["type"] not in ["text", "latex", "image"]:
+                    return (u'Le type de la boite est illégal').encode("Utf-8")
 
         elif data["type"] == "professor":
             # No verification to perform, no automatic grade if the Professor grades the Question

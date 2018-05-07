@@ -1,131 +1,122 @@
-.dnd-draggable {
-  min-width: 150px;
-  max-width: 500px;
-  min-height: 75px;
-  max-height: 500px;
-  float: left;
-  margin: 0 10px 10px 0;
-  border:1px solid black;
-  /* border-radius: 10px; */
-  background-color: #EEEEEE;
-  cursor: move;
-  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
-  text-align: center;
-}
-
-.dnd-textbox{
-    background: transparent;
-    min-width: 100px;
-    min-height: 50px;
-    border: solid black;
-    border-radius: 5px;
-    border-width: thin;
-    width: 70%;
-    display: block;
-    margin-left: auto;
-    margin-top: 10px;
-    margin-right: auto;
-    margin-bottom: 10px;
-    /* display:table;
-    margin:auto; */
-    background-color: white;
-    cursor: text;
-}
-
-.dnd-textbox-student{
-    background: transparent;
-    min-width: 100px;
-    min-height: 50px;
-    border: solid black;
-    border-radius: 5px;
-    border-width: thin;
-    width: 70%;
-    display: block;
-    margin-left: auto;
-    margin-top: 10px;
-    margin-right: auto;
-    margin-bottom: 10px;
-    background-color: white;
-    text-align: center;
-    cursor: default;
-}
-
 #containment-wrapper {
+  position: relative;
   padding: 5px;
-  width:200%;
-  height:600px;
-  border:2px solid black;
+  width:200%; height:600px;
+  border: 5px solid black;
   margin-top: 35px;
   margin-bottom: 20px;
-  background-color: #CFD8DC;
-  border-radius: 5px;
-  position: relative;
+  background-color: #EEEEEE;
+  border-radius: 4px;
   transform: translateX(-50%);
   left: 50%;
 }
 
+.dnd-draggable {
+  width: 160px; min-width: 160px; max-width: 500px;
+  height: 80px; min-height: 80px; max-height: 500px;
+  float: left;
+  text-align: center;
+  margin: 0 10px 10px 0;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+  background-color: #EEEEEE;
+  border:2px solid black;;
+  cursor: move;
+}
+
+.dnd-textbox{
+  position: absolute;
+  background: transparent;
+  display: inline-block;
+  width: 80%; height: 70%;
+  left:0; right:0; top:0; bottom:0;
+  margin:auto;
+  background-color: white;
+  border: 2px solid #000000;
+  border-radius: 5px;
+  border-width: thin;
+  cursor: text;
+  text-align:center;
+  resize: none;
+  overflow:hidden;
+}
+
+.dnd-textbox-student{
+  position: absolute;
+  background: transparent;
+  display: inline-block;
+  width: 80%; height: 70%;
+  left:0; right:0; top:0; bottom:0;
+  margin:auto;
+  background-color: white;
+  border: 2px solid #000000;
+  border-radius: 5px;
+  border-width: thin;
+  cursor: default;
+  resize: none;
+  overflow:hidden;
+}
+
 .dnd-btn-del {
   position: absolute;
-  top: -7px;
-  right: -7px;
-  border: 1px solid #080808;
-  background-color: #FFFFFF;
-  border-radius: 5px;
-  padding: 2px;
+  background-color: white;
+  width: auto; height: auto;
+  margin:0; padding:0;
+  top: -10px; right: -10px;
+  border: 1px solid #000000;
+  cursor: default;
 }
 
 .dnd-btn-del:hover {
-  background-color: #269abc
+  background-color: #A9A9A9
 }
 
 .dnd-btn-param {
   position: absolute;
-  top: -7px;
-  right: 12px;
-  border: 1px solid #080808;
-  background-color: #FFFFFF;
-  border-radius: 5px;
-  padding: 2px;
+  background-color: white;
+  width: auto; height: auto;
+  margin: 0; padding: 0;
+  top: 15px; right: -10px;
+  border: 1px solid #000000;
+  cursor: default;
 }
 
 .dnd-btn-param:hover {
-  background-color: #269abc
+  background-color: #A9A9A9
 }
 
-/* Dot shape origin
-.dnd-display-origin {
+.dnd-display-order {
+  position: relative;
+  top: -10px; left: -10px;
+  width: 20px; height: 20px;
+  border: 1px solid #000000;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+/* Dot shape origin */
+/*.dnd-display-origin {
     position: absolute;
-    top: -7px;
-    left: 48%;
-    height: 15px;
-    width: 15px;
-    border: 1px solid #080808;
-    background-color: #D02222;
+    top: -10px; left: -10px;
+    width: 20px; height: 20px;
+    border: 1px solid #000000;
+    background-color: #FFFFFF;
     border-radius: 50%;
     display: inline-block;
 }*/
 
 /*Triangle shape origin*/
-.dnd-display-origin {
+/*.dnd-display-origin {
   position: absolute;
   top: -1px;
   left: -1px;
   height: 0px;
   width: 0px;
-  border-top: 15px solid #080808;
+  border-top: 15px solid #000000;
   border-right: 15px solid transparent;
   display: inline-block;
-}
-
-.dnd-display-order {
-  position: absolute;
-  bottom: -37px;
-  border: 1px solid #080808;
-  background-color: #FFFFFF;
-  border-radius: 5px;
-  padding: 2px;
-  font-weight: bold;
-}
+}*/
 
 /*set wrapper*/
 #left-set{
