@@ -17,7 +17,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
     var canva = "" //The canva type
 
     //Create a draggable div and push it to tab
-    $scope.createDraggableBlock = function(typeId,question, topIndex) {
+    $scope.createDraggableBlock = function(typeId, question, topIndex) {
       var number = counter; //The number of the new block being added
       var type; //The type of data of the block
       var $inputDisplay;
@@ -42,9 +42,19 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
           //};
           break;
 
-        case "image":
+        case "file":
         case 2:
-          //image
+          type = "file";
+          $inputDisplay = $('<input type='+type+' class="dnd-textbox" id=upload'+number+'></input>').change(
+            function(question,number){
+              var reader = new FileReader();
+              var file = document.querySelector('upload'+number).files[0];
+              reader.readAsDataURL(file);
+              reader.addEventListener("load", function() {
+                  question["answers"][number]["file"] = reader.result;
+              })
+            }
+          );
           break;
 
         default:
@@ -94,6 +104,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         type: type,
         text: "",
         latex: "",
+        file: "",
         order: "",//correct order
         hint: "",
         ancer: "false",
@@ -149,7 +160,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
       document.getElementById("addBlockText").style.display = "inline-block";
       document.getElementById("addBlockMath").style.display = "inline-block";
-      document.getElementById("addBlockImage").style.display = "inline-block";
+      document.getElementById("addBlockFile").style.display = "inline-block";
       document.getElementById("addBlockGeneral").style.display = "inline-block";
 
       canva = document.getElementById("selectCanva").value;
@@ -341,7 +352,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
           question["answers"][number]["latex"] = "";
           break;
 
-        case "image":
+        case "file":
           break;
 
         default:
@@ -362,8 +373,8 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
           $textbox.val(textValue);
           break;
 
-        case "image":
-          $block.attr("type","image");
+        case "file":
+          $block.attr("type","file");
           break;
 
         default:

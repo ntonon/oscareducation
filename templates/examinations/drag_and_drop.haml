@@ -19,7 +19,7 @@
     %span.glyphicon.glyphicon-plus
     Math
 
-  %button.btn.btn-success.add-question{ng-click: "createDraggableBlock(2, question, topIndex)", type: "button", id:"addBlockImage", style:"display: none;"}
+  %button.btn.btn-success.add-question{ng-click: "createDraggableBlock(2, question, topIndex)", type: "button", id:"addBlockFile", style:"display: none;"}
     %span.glyphicon.glyphicon-plus
     Image
 
@@ -36,7 +36,7 @@
         %select#TypeBlockInfo.form-control{placeholder: "Type de texte"}
           %option{value: "text"} Texte simple
           %option{value: "latex"} Texte mathématique (Latex)
-          %option{value: "image"} Image
+          %option{value: "file"} Image
       .form-group
         %label{for: "TextBlockInfo"} Texte :
         %input#TextBlockInfo.form-control{placeholder: "Texte de la boite", type: "text"}/

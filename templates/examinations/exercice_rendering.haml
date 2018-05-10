@@ -54,7 +54,7 @@
                 changeCanva("{{ toploop_counter0 }}","{{ answer.canva.type | safe }}","{{ answer.canva.upLeftSetName | safe }}","{{ answer.canva.upRightSetName | safe }}","{{ answer.canva.downLeftSetName | safe }}","{{ answer.canva.downRightSetName | safe }}");
               -for ans in answer.answers
                 :javascript
-                  createInput("{{ ans.type | safe }}", "{{ ans.text | safe }}", "{{ ans.latex | safe }}", "{{ ans.hint | safe }}", "{{ ans.ancer | safe }}", "{{ ans.width | safe }}", "{{ ans.height | safe }}", "{{ ans.top | safe }}", "{{ ans.left | safe }}");
+                  createInput("{{ ans.type | safe }}", "{{ ans.text | safe }}", "{{ ans.latex | safe }}", "{{ ans.hint | safe }}", "{{ ans.ancer | safe }}", "{{ ans.width | safe }}", "{{ ans.height | safe }}", "{{ ans.top | safe }}", "{{ ans.left | safe }}", "{{ ans.order | safe }}");
           -else
             =answer.type
 

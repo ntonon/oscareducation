@@ -224,13 +224,13 @@ class Question(models.Model):
 
             num=0
             for res in response:
+                print(res["response"].encode('UTF-8')+"=="+str(answers[num]["order"]))
                 if res["response"].encode('UTF-8') == str(answers[num]["order"]):
                     response[num]["correct"] = 1
                 else:
                     response[num]["correct"] = 0
                     success = 0
                 num+=1
-
 
             return success
 

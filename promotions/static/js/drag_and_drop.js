@@ -5,7 +5,7 @@ var canva = "" //The canva type
 var numQuest;
 
 //Create a draggable div and push it to tab
-function createInput(type,text,latex,hint,ancer,width,height,top,left){
+function createInput(type,text,latex,hint,ancer,width,height,top,left,answer){
   var number = counter; //The number of the new block being added
   var $inputDisplay;
 
@@ -20,7 +20,7 @@ function createInput(type,text,latex,hint,ancer,width,height,top,left){
       $inputDisplay.val(latex);
       break;
 
-    case "image":
+    case "file":
       //image
       break;
   }
@@ -48,7 +48,18 @@ function createInput(type,text,latex,hint,ancer,width,height,top,left){
   var posTop = $block.parent().height()/3 + (Math.random()*($block.parent().height()/3)) -50;
   var posLeft = $block.parent().width()/3 + (Math.random()*($block.parent().width()/3)) -50;
 
-  if(ancer == "true"){
+  if(ancer == "true") {
+    if(canva != "ranking") {
+      //If the box is ancered, we need to set the order's box (answer) for 2-set, 4-set and graduate line exercices
+      $block.attr("set",answer);
+      if(answer=="left") { $orderDisplay.css({'background': "#FFCC80"}); }
+      else if(answer=="right") { $orderDisplay.css({'background': "#90CAF9"}); }
+      else if(answer=="upperLeft") { $orderDisplay.css({'background': "#FFA726"}); }
+      else if(answer=="upperRight") { $orderDisplay.css({'background': "#42A5F5"}); }
+      else if(answer=="downLeft") { $orderDisplay.css({'background': "#8D6E63"}); }
+      else if(answer=="downRight") { $orderDisplay.css({'background': "#5C6BC0"}); }
+    }
+
     $block.draggable("disable");
     posTop = top;
     posLeft = left;
@@ -60,30 +71,10 @@ function createInput(type,text,latex,hint,ancer,width,height,top,left){
   counter++;
   num++;
 
-  if(canva == "2-set") {
-
-  }
-
-  if(canva == "4-set") {
-
-  }
-
   //We put the block in the tab
   tab.push($block);
 
-  if(canva == "2-set") {
-    $("#left-set").trigger("over", [$block]);
-    $("#right-set").trigger("over", [$block]);
-  }
-  else if(canva == "4-set") {
-    $("#upper-left-set").trigger("over", [$block]);
-    $("#upper-right-set").trigger("over", [$block]);
-    $("#down-left-set").trigger("over", [$block]);
-    $("#down-right-set").trigger("over", [$block]);
-  }
-  else {
-    order();
-  }
+  order();
 }
 
 //It varies according to the changeCanva
@@ -93,15 +84,15 @@ function order() {
   if(canva == "ranking") {
     tab.sort(function(a,b){return (a.position().left-b.position().left)+(a.position().top-b.position().top);});
     for (var i = 0; i < num; i++) {
-      var number = tab[i].attr('id').slice(9);
-      $("#order"+number).html(i);
-      $("#dnd-"+numQuest+"-"+number).val(i);
+      var id = tab[i].attr('id').slice(9);
+      $("#order"+id).html(i);
+      $("#dnd-"+numQuest+"-"+id).val(i);
     }
   }
   else if(canva=="2-set" || canva=="4-set") {
     for (var i = 0; i < num; i++) {
-      var elementid = tab[i].attr('id').slice(9);
-      $("#dnd-"+numQuest+"-"+elementid).val($("#draggable"+number).attr('set'));
+      var id = tab[i].attr('id').slice(9);
+      $("#dnd-"+numQuest+"-"+id).val($("#draggable"+id).attr('set'));
     }
   }
 }
