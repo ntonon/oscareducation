@@ -1408,20 +1408,10 @@ def exercice_validation_form_validate_exercice(request):
             }
 
         elif question["type"] == "drag-and-drop":
-            answers = []
-            for x in question["answers"]:
-                if len(x) > 2:
-                    temp = x
-                    temp["order"] = ""
-                    answers.push(temp)
-
-            printf(question["answers"])
-            printf(answers)
-
             questions[question["instructions"]] = {
                 "type": question["type"],
                 "canva": question["canva"],
-                "answers": answers,
+                "answers": [a for a in question["answers"] if len(a) > 2],
             }
 
         else:
@@ -1566,18 +1556,10 @@ def exercice_validation_form_submit(request, pk=None):
                 }
 
             elif question["type"] == "drag-and-drop":
-                answers = []
-                for x in question["answers"]:
-                    if len(x) > 2:
-                        answers.push({"order": x["order"]})
-
-                printf(question["answers"])
-                printf(answers)
-
                 new_question_answers = {
                     "type": question["type"],
                     "canva": question["canva"],
-                    "answers": answers,
+                    "answers": [a for a in question["answers"] if len(a) > 2],
                 }
 
             else:

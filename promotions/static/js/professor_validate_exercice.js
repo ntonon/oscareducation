@@ -15,13 +15,11 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       console.log("Hello");
       if (input.files && input.files[0]) {
         var reader = new FileReader();
-
+        reader.readAsDataURL(input.files[0]);
         reader.onload = function (e) {
           $('#img'+number).attr('src', e.target.result);
+          question["answers"][number]["file"] = e.target.result;
         }
-
-          reader.readAsDataURL(input.files[0]);
-          question["answers"][number]["file"] = reader.result;
       }
     }
 

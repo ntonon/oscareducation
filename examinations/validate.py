@@ -92,7 +92,7 @@ def validate_exercice_yaml_structure(exercice):
                 return (u'Une question doit au moins avoir un block (cliquez sur le "+" pour en ajouter)')
 
             for answer in data["answers"]:
-                if answer["type"] not in ["text", "latex", "image"]:
+                if answer["type"] not in ["text", "latex", "file"]:
                     return (u'Le type de la boite est illégal').encode("Utf-8")
 
         elif data["type"] == "professor":

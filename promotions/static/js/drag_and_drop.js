@@ -9,6 +9,18 @@ function createInput(type,text,latex,file,hint,ancer,width,height,top,left,answe
   var number = counter; //The number of the new block being added
   var $inputDisplay;
 
+  var $block = $('<div id=draggable'+number+' type="text" class="dnd-draggable ui-widget-content" set="center"> </div>').draggable({
+    containment: "#containment-wrapper",
+    scroll: false,
+    stack: ".dnd-draggable",
+    stop: function(){
+      order();
+    }
+  });
+
+  console.log("SALUT");
+  console.log(type);
+
   switch(type){
     case "text":
       $inputDisplay = $('<textarea type='+type+' class="dnd-textbox-student" id=textbox'+number+' disabled="disabled"></textarea>');
@@ -21,21 +33,13 @@ function createInput(type,text,latex,file,hint,ancer,width,height,top,left,answe
       break;
 
     case "file":
-      //image
+      console.log(file);
+      $inputDisplay = $('<img id=img'+number+' src='+file+' alt="your image"></img>');
       break;
   }
 
   var $orderDisplay = $('<p id=order'+number+' class="dnd-display-order"> </p>');//order of the box (varies according to the canva)
   var $request = $('<input id=dnd-'+numQuest+'-'+number+' name=dnd-'+numQuest+'-'+number+' style="display: none;"> </p>');
-
-  var $block = $('<div id=draggable'+number+' type="text" class="dnd-draggable ui-widget-content" set="center"> </div>').draggable({
-    containment: "#containment-wrapper",
-    scroll: false,
-    stack: ".dnd-draggable",
-    stop: function(){
-      order();
-    }
-  });
 
   //Append of the elements to the div block
   $inputDisplay.appendTo($block);
