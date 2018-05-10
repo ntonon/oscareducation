@@ -18,9 +18,6 @@ function createInput(type,text,latex,file,hint,ancer,width,height,top,left,answe
     }
   });
 
-  console.log("SALUT");
-  console.log(type);
-
   switch(type){
     case "text":
       $inputDisplay = $('<textarea type='+type+' class="dnd-textbox-student" id=textbox'+number+' disabled="disabled"></textarea>');
