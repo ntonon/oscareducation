@@ -30,8 +30,25 @@ function createInput(type,text,latex,file,hint,ancer,width,height,top,left,answe
       break;
 
     case "file":
-      console.log(file);
-      $inputDisplay = $('<img id=img'+number+' src='+file+' alt="your image"></img>');
+
+      var modal = document.getElementById('myModal');
+      var image_modal = document.getElementById("imgmod");
+
+      $inputDisplay = $('<img id=img'+number+' class = "myimages" src='+file+' alt="your image"></img>');
+      $inputDisplay.click(function(){
+          modal.style.display="block";
+          image_modal.src = this.src;
+      });
+      $inputDisplay.appendTo($block);
+
+      var span = document.getElementsByClassName("close")[0];
+
+      span.onclick = function(){
+          modal.style.display = "none";
+      }
+      image_modal.onclick = function(){
+          modal.style.display = "none";
+      }
       break;
   }
 
@@ -104,6 +121,9 @@ function changeCanva(toploop,canvaType,upLeftSetName,upRightSetName,downLeftSetN
   numQuest = toploop;
 
   $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
+
+  var $modaldoc = $('<div id="myModal" class="modal"> <span class="close">&times;</span> <img class="modal-content" id="imgmod"> </div>')
+  $modaldoc.appendTo(document.body);
 
   if(canva == "2-set") {
     createSet("right",upRightSetName);
