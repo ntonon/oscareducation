@@ -11,16 +11,50 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
     /////////////////////////////////////////////// DRAG AND DROP /////////////////////////////////////////////
 
+    $scope.readFile = function(input,question,number) {
+      console.log("Hello");
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          $('#img'+number).attr('src', e.target.result);
+        }
+
+          reader.readAsDataURL(input.files[0]);
+          question["answers"][number]["file"] = reader.result;
+      }
+    }
+
     var counter = 0;//Number of blockes added to the canva
     var num = 0; //Number of blockes displayed on the canva
     var tab = []; //The displayed blockes on the canva
     var canva = "" //The canva type
+
 
     //Create a draggable div and push it to tab
     $scope.createDraggableBlock = function(typeId, question, topIndex) {
       var number = counter; //The number of the new block being added
       var type; //The type of data of the block
       var $inputDisplay;
+
+      //Draggable block
+      var $block = $('<div id=draggable'+number+' type="text" number='+number+' class="dnd-draggable ui-widget-content" set="center"> </div>').draggable({
+        containment: "#containment-wrapper",
+        scroll: false,
+        stack: ".dnd-draggable",
+        stop: function() {
+          $scope.order(question);
+        }
+      });
+
+      $block = $block.resizable({
+        handles: "se",
+        resize: function() {
+          $scope.order(question);
+          question["answers"][number]["height"] = $(this).height();
+          question["answers"][number]["width"] = $(this).width();
+        }
+      });
 
       switch(typeId) {
         case "text":
@@ -45,16 +79,9 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         case "file":
         case 2:
           type = "file";
-          $inputDisplay = $('<input type='+type+' class="dnd-textbox" id=upload'+number+'></input>').on('change', '#upload'+number,
-            function(e,question,number){
-              var reader = new FileReader();
-              var file = e.target.files[0];
-              reader.readAsDataURL(file);
-              reader.addEventListener("load", function() {
-                  question["answers"][number]["file"] = reader.result;
-              })
-            }
-          );
+          $inputDisplay = $('<input type='+type+' id=upload'+number+'></input>').change(function(){$scope.readFile(this,question,number);});
+          $img = $('<img id=img'+number+' src="#" alt="your image"></img>');
+          $img.appendTo($block);
           break;
 
         default:
@@ -64,25 +91,6 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       var $deleteButton = $('<a class=dnd-btn-del> <span class="glyphicon glyphicon-trash trash-icon"></span> </a>').click(function(){$scope.deleteDraggableBlock(number,question)});//delete button of the block
       var $paramButton = $('<a class=dnd-btn-param> <span class="glyphicon glyphicon-cog"></span> </a>').click(function(){$scope.openBlockInfoDisplay(number,question)});//param button of the block
       var $orderDisplay = $('<p id=order'+counter+' class="dnd-display-order"> </p>');//order of the block (varies according to the canva)
-
-      //Draggable block
-      var $block = $('<div id=draggable'+number+' type="text" number='+number+' class="dnd-draggable ui-widget-content" set="center"> </div>').draggable({
-        containment: "#containment-wrapper",
-        scroll: false,
-        stack: ".dnd-draggable",
-        stop: function() {
-          $scope.order(question);
-        }
-      });
-
-      $block = $block.resizable({
-        handles: "se",
-        resize: function() {
-          $scope.order(question);
-          question["answers"][number]["height"] = $(this).height();
-          question["answers"][number]["width"] = $(this).width();
-        }
-      });
 
       //Append of the elements to the div block
       $inputDisplay.appendTo($block);
