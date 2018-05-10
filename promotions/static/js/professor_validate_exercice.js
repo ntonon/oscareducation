@@ -81,7 +81,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
           var image_modal = document.getElementById("imgmod");
 
           type = "file";
-          $inputDisplay = $('<input type='+type+' id=upload'+number+'></input>').change(function(){$scope.readFile(this,question,number);});
+          $inputDisplay = $('<input type='+type+' class="myupload" id=upload'+number+'></input>').change(function(){$scope.readFile(this,question,number);});
           $img = $('<img id=img'+number+' src="#" class="myimages" alt="your image"></img>');
           $img.click(function(){
               modal.style.display="block";
