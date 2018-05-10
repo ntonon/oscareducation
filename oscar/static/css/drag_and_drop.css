@@ -12,8 +12,8 @@
 }
 
 .dnd-draggable {
-  width: 160px; min-width: 160px; max-width: 500px;
-  height: 80px; min-height: 80px; max-height: 500px;
+  width: auto; min-width: 160px; max-width: 500px;
+  height: auto; min-height: 80px; max-height: 500px;
   float: left;
   text-align: center;
   margin: 0 10px 10px 0;
@@ -22,6 +22,54 @@
   border:2px solid black;;
   cursor: move;
 }
+
+.myimages{
+    height: auto;
+    width: auto;
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.myimages:hover{opacity: 0.7;}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+/* The Close Button */
+.close {
+    position: relative;
+    top: 70px;
+    right: 35px;
+    color: #FFFFFF;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+
+/* .thumb{
+    height: 100px;
+    width: auto;
+} */
 
 .dnd-textbox{
   position: absolute;

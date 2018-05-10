@@ -76,10 +76,28 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
         case "file":
         case 2:
+
+          var modal = document.getElementById('myModal');
+
+          var image_modal = document.getElementById("imgmod");
           type = "file";
           $inputDisplay = $('<input type='+type+' id=upload'+number+'></input>').change(function(){$scope.readFile(this,question,number);});
-          $img = $('<img id=img'+number+' src="#" alt="your image"></img>');
+          $img = $('<img id=img'+number+' src="#" class="myimages" alt="your image"></img>');
+          $img.click(function(){
+              console.log("cool");
+              modal.style.display="block";
+              image_modal.src = this.src;
+          });
+          //$img.click(function(){$(this).toggleClass("thumb")})
           $img.appendTo($block);
+          var span = document.getElementsByClassName("close")[0];
+
+          span.onclick = function(){
+              modal.style.display = "none";
+          }
+          image_modal.onclick = function(){
+              modal.style.display = "none";
+          }
           break;
 
         default:
