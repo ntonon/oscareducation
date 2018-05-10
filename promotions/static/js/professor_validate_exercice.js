@@ -45,10 +45,10 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         case "file":
         case 2:
           type = "file";
-          $inputDisplay = $('<input type='+type+' class="dnd-textbox" id=upload'+number+'></input>').change(
-            function(question,number){
+          $inputDisplay = $('<input type='+type+' class="dnd-textbox" id=upload'+number+'></input>').on('change', '#upload'+number,
+            function(e,question,number){
               var reader = new FileReader();
-              var file = document.querySelector('upload'+number).files[0];
+              var file = e.target.files[0];
               reader.readAsDataURL(file);
               reader.addEventListener("load", function() {
                   question["answers"][number]["file"] = reader.result;

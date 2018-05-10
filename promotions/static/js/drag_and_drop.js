@@ -5,7 +5,7 @@ var canva = "" //The canva type
 var numQuest;
 
 //Create a draggable div and push it to tab
-function createInput(type,text,latex,hint,ancer,width,height,top,left,answer){
+function createInput(type,text,latex,file,hint,ancer,width,height,top,left,answer){
   var number = counter; //The number of the new block being added
   var $inputDisplay;
 
