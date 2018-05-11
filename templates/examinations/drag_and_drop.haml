@@ -2,57 +2,67 @@
 
 .form-group
   %label.control-label.col-sm-2 Type de canvas
-  .col-sm-9
+  .col-sm-10
     %select.form-control{ng-model: "question.canva.type", ng-required: "true", ng-change: "changeCanva(question)", id: "selectCanva"}
       %option{value: "ranking"} Classement
       %option{value: "2-set"} 2-Ensemble
       %option{value: "4-set"} 4-Ensemble
-      %option{value: "graduateLine"} Ligne graduée
+      %option{value: "graduatedLine"} Ligne graduée
 
 .form-group
-  .col-sm-1
-  %button.btn.btn-success.add-question{ng-click: "createDraggableBlock(0, question, topIndex)", type: "button", id:"addBlockText", style:"display: none;"}
-    %span.glyphicon.glyphicon-plus
-    Text
+  .col-sm-10
+    %button.btn.btn-success.add-question{ng-click: "createDraggableBlock(0, question, topIndex)", type: "button", id:"addBlockText", style:"display: none;"}
+      %span.glyphicon.glyphicon-plus
+      Text
+    %button.btn.btn-success.add-question{ng-click: "createDraggableBlock(1, question, topIndex)", type: "button", id:"addBlockMath", style:"display: none;"}
+      %span.glyphicon.glyphicon-plus
+      Math
+    %button.btn.btn-success.add-question{ng-click: "createDraggableBlock(2, question, topIndex)", type: "button", id:"addBlockFile", style:"display: none;"}
+      %span.glyphicon.glyphicon-plus
+      Image
+    %button.btn.btn-success.add-question{ng-click: "openBlockInfoDisplay(-1,question, topIndex)", type: "button", id:"addBlockGeneral", style:"display: none;"}
+      %span.glyphicon.glyphicon-plus
+      Perso
 
-  %button.btn.btn-success.add-question{ng-click: "createDraggableBlock(1, question, topIndex)", type: "button", id:"addBlockMath", style:"display: none;"}
-    %span.glyphicon.glyphicon-plus
-    Math
-
-  %button.btn.btn-success.add-question{ng-click: "createDraggableBlock(2, question, topIndex)", type: "button", id:"addBlockFile", style:"display: none;"}
-    %span.glyphicon.glyphicon-plus
-    Image
-
-  %button.btn.btn-success.add-question{ng-click: "openBlockInfoDisplay(-1,question, topIndex)", type: "button", id:"addBlockGeneral", style:"display: none;"}
-    %span.glyphicon.glyphicon-plus
-    Perso
+#GraduatedLineInfo.dnd-modal
+  .dnd-modal-content
+    %span.dnd-close{ng-click: "closeBlockInfoDisplay()"} ×
+    .form-group
+      %label{for: "IntervalgraduatedLine"} Intervalle
+      %input#IntervalgraduatedLine.form-control{type: "text"}/
+    .form-group
+      %label{for: "NumberIntervalgraduatedLine"} Nombre d'intervalles
+      %input#NumberIntervalgraduatedLine.form-control{type: "text"}/
+    %a#ValidateGraduatedLineInfo.btn.btn-primary Valider
 
 #BlockInfo.dnd-modal
   .dnd-modal-content
     %span.dnd-close{ng-click: "closeBlockInfoDisplay()"} ×
     #BlockInfoForm
       .form-group
-        %label{for: "TypeBlockInfo"} Type de texte :
-        %select#TypeBlockInfo.form-control{placeholder: "Type de texte"}
+        %label{for: "TypeBlockInfo"} Type de boite :
+        %select#TypeBlockInfo.form-control{}
           %option{value: "text"} Texte simple
           %option{value: "latex"} Texte mathématique (Latex)
           %option{value: "file"} Image
-      .form-group
-        %label{for: "TextBlockInfo"} Texte :
-        %input#TextBlockInfo.form-control{placeholder: "Texte de la boite", type: "text"}/
+      #TextBlockInfoGroup.form-group
+        %label{for: "TextBlockInfo"} Texte de la boite :
+        %input#TextBlockInfo.form-control{type: "text"}/
+      #FileBlockInfoGroup.form-group
+        %label{for: "FileBlockInfo"} Image :
+        %input#FileBlockInfo{type: "file"}/
       .form-group
         %label{for: "HintBlockInfo"} Indication(s) pour l'étudiant en cas de mauvaise réponse:
-        %input#HintBlockInfo.form-control{placeholder: "Indication(s)", type: "text"}/
+        %input#HintBlockInfo.form-control{type: "text"}/
       .form-group
         .form-check
-          %label.form-check-label{for: "AncerBlockInfo"} Ancrage de la boite
+          %label.form-check-label{for: "AncerBlockInfo"} Ancrage de la boite :
           %input#AncerBlockInfo.form-check-input{type :"checkbox"}/
       %a#ValidateBlockInfo.btn.btn-primary Valider
 
-#myModal.modal
-  %span.close ×
+#myModal.dnd-modal{style: "padding-top: 100px;"}
+  %span.close{ng-click: "closeBlockInfoDisplay()"} ×
   %img#imgmod.modal-content/
-
 
 #wrapper
   #containment-wrapper{style:"display: none;"}

@@ -94,8 +94,6 @@
                     %option{value: "graph"} Réponse sur un graphique
                     %option{value: "professor"} Réponse corrigée par le professeur
                     %option{value: "drag-and-drop"} Question drag and drop
-              .form-group{ng-if : "question.type == \"drag-and-drop\""}
-                -include "examinations/drag_and_drop.haml"
               .form-group
                 %label.control-label.col-sm-2 Source(s)
                 .col-sm-10
@@ -104,6 +102,7 @@
                 %label.control-label.col-sm-2 Indication pour les professeurs
                 .col-sm-10
                   %input.form-control{type: "text", ng-model: "question.indication", ng-required: "false"}
+
             %ul.list-group
               %li.list-group-item{ng-if: "question.type != \"professor\" && question.type != \"drag-and-drop\"", ng-repeat: "answer in question.answers", ng-init: "answerIndex = $index.toString()"}
                 .form-horizontal{ng-if: "question.type != \"graph\""}
@@ -146,7 +145,12 @@
                         .input-group-addon Y
                         %input.form-control{type: "number", ng-required: "true", placeholder: "0", ng-model: "answer.graph.coordinates.Y"}
 
-            %button.btn.btn-success.btn-sm{ng-if: "question.type != \"professor\"", ng-click: "addAnswer(topIndex, question)", type: "button"}
+            %ul.list-group{ng-if : "question.type == \"drag-and-drop\""}
+              %li.list-group-item
+                .form-horizontal
+                  -include "examinations/drag_and_drop.haml"
+
+            %button.btn.btn-success.btn-sm{ng-if: "question.type != \"professor\" && question.type != \"drag-and-drop\"", ng-click: "addAnswer(topIndex, question)", type: "button"}
               %span.glyphicon.glyphicon-plus
               nouvelle réponse possible
 

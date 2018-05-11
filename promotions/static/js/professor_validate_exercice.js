@@ -11,18 +11,6 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
     /////////////////////////////////////////////// DRAG AND DROP /////////////////////////////////////////////
 
-    $scope.readFile = function(input,question,number) {
-      console.log("Hello");
-      if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.readAsDataURL(input.files[0]);
-        reader.onload = function (e) {
-          $('#img'+number).attr('src', e.target.result);
-          question["answers"][number]["file"] = e.target.result;
-        }
-      }
-    }
-
     var counter = 0;//Number of blockes added to the canva
     var num = 0; //Number of blockes displayed on the canva
     var tab = []; //The displayed blockes on the canva
@@ -77,25 +65,16 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         case "file":
         case 2:
 
-          var modal = document.getElementById('myModal');
+          var modal = document.getElementById("myModal");
           var image_modal = document.getElementById("imgmod");
+          var span = document.getElementsByClassName("close")[0];
 
           type = "file";
           $inputDisplay = $('<input type='+type+' class="myupload" id=upload'+number+'></input>').change(function(){$scope.readFile(this,question,number);});
-          $img = $('<img id=img'+number+' src="#" class="myimages" alt="your image"></img>');
-          $img.click(function(){
-              modal.style.display="block";
-              image_modal.src = this.src;
-          });
-          $img.appendTo($block);
-          var span = document.getElementsByClassName("close")[0];
+          $img = $('<img id=img'+number+' src="#" class="myimages" alt="your image"></img>').click(function(){modal.style.display="block"; image_modal.src = this.src;});
 
-          span.onclick = function(){
-              modal.style.display = "none";
-          }
-          image_modal.onclick = function(){
-              modal.style.display = "none";
-          }
+          $img.appendTo($block);
+
           break;
 
         default:
@@ -143,11 +122,11 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
     //Display alert when deleting a block in order to
     //Remove the block "block" from the canva and from tab
     $scope.deleteDraggableBlock = function(number,question) {
-      if (confirm('Etes vous sur de vouloir supprimer ce block ?')) {
+      if (confirm("Etes vous sur de vouloir supprimer ce block ?")) {
         for (var i = 0; i < num; i++) {
-          if (number == tab[i].attr('number')) {
-            document.getElementById("draggable"+number).style.visibility = 'hidden';
-            question["answers"][tab[i].attr('number')]={};
+          if (number == tab[i].attr("number")) {
+            $("#draggable"+number).css("visibility", "hidden");
+            question["answers"][tab[i].attr("number")]={};
             tab.splice(i, 1);
             num--;
             break;
@@ -170,7 +149,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       }
       else if(canva=="2-set" || canva=="4-set") {
         for (var i = 0; i < num; i++) {
-          question["answers"][tab[i].attr('number')].order = tab[i].attr("set");
+          question["answers"][tab[i].attr("number")].order = tab[i].attr("set");
         }
       }
     }
@@ -178,29 +157,56 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
     //Change the canva when the user select a new one
     $scope.changeCanva = function(question) {
       question["answers"]=[];
-      document.getElementById("containment-wrapper").remove();
+      $("#containment-wrapper").remove();
 
-      document.getElementById("addBlockText").style.display = "inline-block";
-      document.getElementById("addBlockMath").style.display = "inline-block";
-      document.getElementById("addBlockFile").style.display = "inline-block";
-      document.getElementById("addBlockGeneral").style.display = "inline-block";
+      canva = $("#selectCanva").val()
+      switch(canva) {
+        case "ranking":
+          $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
 
-      canva = document.getElementById("selectCanva").value;
-      $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
+          $("#addBlockText").css("display", "inline-block");
+          $("#addBlockMath").css("display", "inline-block");
+          $("#addBlockFile").css("display", "inline-block");
+          $("#addBlockGeneral").css("display", "inline-block");
+          break;
 
-      if(canva == "2-set") {
-        $scope.createSet("right",question);
-        $scope.createSet("left",question);
-      }
+        case "2-set":
+          $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
 
-      else if(canva == "4-set") {
-        $scope.createSet("upperRight",question);
-        $scope.createSet("upperLeft",question);
-        $scope.createSet("downRight",question);
-        $scope.createSet("downLeft",question);
-      }
-      else if (canva == "graduateLine") {
-        document.getElementById("containment-wrapper").style.backgroundColor = "white";
+          $("#addBlockText").css("display", "inline-block");
+          $("#addBlockMath").css("display", "inline-block");
+          $("#addBlockFile").css("display", "inline-block");
+          $("#addBlockGeneral").css("display", "inline-block");
+
+          $scope.createSet("right",question);
+          $scope.createSet("left",question);
+          break;
+
+        case "4-set":
+          $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
+
+          $("#addBlockText").css("display", "inline-block");
+          $("#addBlockMath").css("display", "inline-block");
+          $("#addBlockFile").css("display", "inline-block");
+          $("#addBlockGeneral").css("display", "inline-block");
+
+          $scope.createSet("upperRight",question);
+          $scope.createSet("upperLeft",question);
+          $scope.createSet("downRight",question);
+          $scope.createSet("downLeft",question);
+          break;
+
+        case "graduatedLine":
+          $("#GraduatedLineInfo").css("display", "block");
+
+          $("#ValidateGraduatedLine").val("");
+          $("#ValidateGraduatedLineInfo").val("");
+
+          $("#ValidateGraduatedLineInfo").on("click", $scope.setGraduatedLine());
+          break;
+
+        default:
+          console.log("Wrong type of canva.");
       }
 
       counter = 0;
@@ -321,37 +327,68 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       $input.appendTo(document.getElementById(pos));
     }
 
+    $scope.setGraduatedLine = function() {
+
+    }
+
     $scope.openBlockInfoDisplay = function(number,question, topIndex) {
-      $('#BlockInfo').css('display', 'block');
+      $("#BlockInfo").css("display", "block");
+
+      $("#FileBlockInfoGroup").css("display", "none");
+      $("#TextBlockInfoGroup").css("display", "none");
+
+      $("#TypeBlockInfo").on("change", function(){
+        console.log($("#TypeBlockInfo").val());
+        switch($("#TypeBlockInfo").val()) {
+          case "file":
+            $("#TextBlockInfoGroup").css("display", "none");
+            $("#FileBlockInfoGroup").css("display", "block");
+            break;
+
+          case "text":
+          case "latex":
+            $("#FileBlockInfoGroup").css("display", "none");
+            $("#TextBlockInfoGroup").css("display", "block");
+            break;
+
+          default:
+            console.log("Wrong type of block.");
+        }
+
+      });
 
       if(number != -1) {
         var type = question["answers"][number]["type"];
-        $('#TypeBlockInfo').val(type);//Set the drop down list value
-        $('#TextBlockInfo').val(question["answers"][number][type]);//Set the text value
-        $('#HintBlockInfo').val(question["answers"][number]["hint"]);//Set the hint
-        $('#AncerBlockInfo').prop('checked',(question["answers"][number]["ancer"] == "true"));//Set the ancer value
+        $("#TypeBlockInfo").val(type).change();//Set the drop down list value
+        if(type == "file") {} //$("#FileBlockInfo").val(question["answers"][number][type]); } //Set the file value
+        else { $("#TextBlockInfo").val(question["answers"][number][type]); } //Set the text value
+        $("#TextBlockInfo").val(question["answers"][number][type]);//Set the text value
+        $("#HintBlockInfo").val(question["answers"][number]["hint"]);//Set the hint
+        $("#AncerBlockInfo").prop("checked",(question["answers"][number]["ancer"] == "true"));//Set the ancer value
       }
       else {
-        $('#TypeBlockInfo').val("text");//Set the drop down list value
-        $('#TextBlockInfo').val("Texte de la boite");//Set the text value
-        $('#HintBlockInfo').val("Indication(s)");//Set the hint
-        $('#AncerBlockInfo').prop('checked',false);//Set the ancer value
+        $("#TypeBlockInfo").val("");//Set the drop down list value
+        $("#TextBlockInfo").val("");//Set the text value
+        $("#FileBlockInfo").val("");//Set the file value
+        $("#HintBlockInfo").val("");//Set the hint
+        $("#AncerBlockInfo").prop("checked",false);//Set the ancer value
       }
 
-      $('#ValidateBlockInfo').off('click');
-      $('#ValidateBlockInfo').on("click", function(){$scope.modifyDraggableBlock(number,question, topIndex);});
+      $("#ValidateBlockInfo").off("click");
+      $("#ValidateBlockInfo").on("click", function(){$scope.modifyDraggableBlock(number,question, topIndex);});
     }
 
     $scope.closeBlockInfoDisplay = function() {
-      $('#BlockInfo').css('display', 'none');
+      $(".dnd-modal").css("display", "none");
     }
 
-    $scope.modifyDraggableBlock = function(number,question, topIndex) {
+    $scope.modifyDraggableBlock = function(number, question, topIndex) {
       //Retrieve the information of the form
-      var typeValue = $('#TypeBlockInfo').val();
-      var textValue = $('#TextBlockInfo').val();
-      var hintValue = $('#HintBlockInfo').val();
-      var ancerValue = $('#AncerBlockInfo').prop('checked');
+      var typeValue = $("#TypeBlockInfo").val();
+      var textValue = $("#TextBlockInfo").val();
+      var fileValue = $("#FileBlockInfo").prop('files');
+      var hintValue = $("#HintBlockInfo").val();
+      var ancerValue = $("#AncerBlockInfo").prop("checked");
 
       //Create the new block
       if(number == -1) {
@@ -360,8 +397,8 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       }
 
       //Retrieve the block
-      var $block = $('#draggable'+number);
-      var $textbox = $('#textbox'+number);
+      var $block = $("#draggable"+number);
+      var $textbox = $("#textbox"+number);
 
       //Reset the values
 
@@ -375,6 +412,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
           break;
 
         case "file":
+          question["answers"][number]["file"] = "";
           break;
 
         default:
@@ -384,7 +422,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       //Switch the values
       switch(typeValue) {
         case "text":
-          question["answers"][number]["type"] = textValue;
+          question["answers"][number]["text"] = textValue;
           $block.attr("type","text");
           $textbox.val(textValue);
           break;
@@ -397,6 +435,14 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
         case "file":
           $block.attr("type","file");
+
+          var reader = new FileReader();
+          reader.readAsDataURL(fileValue[0]);
+          reader.onload = function (e) {
+            $("#img"+number).attr("src", e.target.result);
+            question["answers"][number]["file"] = e.target.result;
+          }
+
           break;
 
         default:
@@ -420,6 +466,18 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       question["answers"][number]["hint"] = hintValue;
 
       $scope.closeBlockInfoDisplay()
+    }
+
+    //Read the image file uploaded and add it to the block data.
+    $scope.readFile = function(input,question,number) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.readAsDataURL(input.files[0]);
+        reader.onload = function (e) {
+          $("#img"+number).attr("src", e.target.result);
+          question["answers"][number]["file"] = e.target.result;
+        }
+      }
     }
 
     /////////////////////////////////////////////// DRAG AND DROP /////////////////////////////////////////////
