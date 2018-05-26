@@ -1,7 +1,7 @@
 #containment-wrapper {
   position: relative;
   padding: 5px;
-  width:200%; height:600px;
+  width: 200%; height: 600px;
   border: 5px solid black;
   margin-top: 35px;
   margin-bottom: 20px;
@@ -23,31 +23,6 @@
   cursor: move;
 }
 
-.myimages{
-    height: auto;
-    width: auto;
-    max-width: 100px;
-    max-height: 100px;
-    position: absolute;
-    text-align: center;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    cursor: default;
-}
-
-.myimages:hover{opacity: 0.7;}
-
-/* Modal Content (image) */
-.modal-content {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
-}
-
 /* The Close Button */
 .close {
     position: relative;
@@ -57,17 +32,6 @@
     font-size: 40px;
     font-weight: bold;
 }
-
-.myupload {
-    top: 80px;
-    position: absolute;
-
-}
-
-/* .thumb{
-    height: 100px;
-    width: auto;
-} */
 
 .dnd-textbox{
   position: absolute;
@@ -101,6 +65,28 @@
   text-align:center;
   resize: none;
   overflow:hidden;
+}
+
+.dnd-image{
+    height: auto;
+    width: auto;
+    max-width: 80%;
+    max-height: 80%;
+    position: absolute;
+    text-align: center;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    cursor: default;
+}
+
+.dnd-image:hover{opacity: 0.7;}
+
+.dnd-upload {
+    bottom: -40px;
+    position: absolute;
 }
 
 .dnd-btn-del {
@@ -142,28 +128,48 @@
   vertical-align: middle;
 }
 
-/* Dot shape origin */
-/*.dnd-display-origin {
-    position: absolute;
-    top: -10px; left: -10px;
-    width: 20px; height: 20px;
-    border: 1px solid #000000;
-    background-color: #FFFFFF;
-    border-radius: 50%;
-    display: inline-block;
-}*/
-
-/*Triangle shape origin*/
-/*.dnd-display-origin {
+.dnd-interval-set {
   position: absolute;
-  top: -1px;
-  left: -1px;
-  height: 0px;
-  width: 0px;
-  border-top: 15px solid #000000;
-  border-right: 15px solid transparent;
-  display: inline-block;
-}*/
+  top: -5px;
+  height: 600px;
+}
+
+.dnd-interval-text {
+  position: absolute;
+  height: 30px;
+  vertical-align:middle;
+  top: 53%;
+  z-index: 2;
+}
+
+.dnd-interval-dash {
+  position: absolute;
+  top: 50%;
+  width: 5px;
+  height: 15px;
+  background-color: #000000;
+  z-index: 2;
+}
+
+.dnd-interval-line {
+  position: absolute;
+  top: 50%;
+  height: 5px;
+  background-color: #000000;
+  z-index: 2;
+}
+
+.dnd-interval-arrow {
+  position:absolute;
+  top: 295px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 7.5px 0 7.5px 20px;
+  border-color: transparent transparent transparent #000000;
+  -webkit-transform:rotate(360deg);
+  z-index: 2;
+}
 
 /*set wrapper*/
 #left-set{
@@ -236,7 +242,7 @@
 .dnd-modal {
    display: none; /* Hidden by default */
    position: fixed; /* Stay in place */
-   z-index: 1; /* Sit on top */
+   z-index: 3; /* Sit on top */
    left: 0;
    top: 0;
    width: 100%; /* Full width */
@@ -255,6 +261,15 @@
    width: 80%; /* Could be more or less, depending on screen size */
 }
 
+.dnd-modal-image{
+    height: auto;
+    width: auto;
+    max-width: 50%;
+    max-height: 50%;
+    text-align: center;
+    margin: auto;
+}
+
 /* The Close Button */
 .dnd-close {
    color: #aaa;
@@ -268,4 +283,8 @@
    color: black;
    text-decoration: none;
    cursor: pointer;
+}
+
+input:invalid {
+  border:1px solid red;
 }

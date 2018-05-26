@@ -49,12 +49,25 @@
             -#%textarea.form-control{id: "{{ forloop.counter0 }}", name: "{{ forloop.counter0 }}", rows: "5"}
           -elif answer.type == "drag-and-drop"
             -with toploop_counter0=forloop.counter0
+              #ImageInfo.dnd-modal{style: "padding-top: 100px;"}
+                %span.close{ng-click: "closeBlockInfoDisplay()"} ×
+                %img#ImageZoom.modal-content/
               #wrapper
-              :javascript
-                changeCanva("{{ toploop_counter0 }}","{{ answer.canva.type | safe }}","{{ answer.canva.upLeftSetName | safe }}","{{ answer.canva.upRightSetName | safe }}","{{ answer.canva.downLeftSetName | safe }}","{{ answer.canva.downRightSetName | safe }}");
+              -if answer.canva.type == "ranking"
+                :javascript
+                  changeCanvaRanking("{{ toploop_counter0 }}","{{ answer.canva.type | safe }}");
+              -elif answer.canva.type == "2-set"
+                :javascript
+                  changeCanva2Set("{{ toploop_counter0 }}", "{{ answer.canva.type | safe }}", "{{ answer.canva.right | safe }}","{{ answer.canva.left | safe }}");
+              -elif answer.canva.type == "4-set"
+                :javascript
+                  changeCanva4Set("{{ toploop_counter0 }}", "{{ answer.canva.type | safe }}", "{{ answer.canva.upperLeft | safe }}","{{ answer.canva.upperRight | safe }}","{{ answer.canva.downLeft | safe }}","{{ answer.canva.downRight | safe }}");
+              -elif answer.canva.type == "graduatedLine"
+                :javascript
+                  changeCanvaGraduatedLine("{{ toploop_counter0 }}", "{{ answer.canva.type | safe }}", "{{ answer.canva.numInter | safe }}", "{{ answer.canva.begInter | safe }}","{{ answer.canva.endInter | safe }}");
               -for ans in answer.answers
                 :javascript
-                  createInput("{{ ans.type | safe }}", "{{ ans.text | safe }}", "{{ ans.latex | safe }}", "{{ ans.file | safe }}", "{{ ans.hint | safe }}", "{{ ans.ancer | safe }}", "{{ ans.width | safe }}", "{{ ans.height | safe }}", "{{ ans.top | safe }}", "{{ ans.left | safe }}", "{{ ans.order | safe }}");
+                  createInput("{{ ans.type | safe }}", "{{ ans.text | safe }}", "{{ ans.latex | safe }}", "{{ ans.file | safe }}", "{{ ans.hint | safe }}", "{{ ans.ancer | safe }}", "{{ ans.width | safe }}", "{{ ans.height | safe }}", "{{ ans.top | safe }}", "{{ ans.left | safe }}", "{{ ans.order | safe }}, {{ ans.set | safe }}");
           -else
             =answer.type
 
