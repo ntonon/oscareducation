@@ -106,9 +106,10 @@ function order() {
     }
   }
   else if(canva=="GraduatedLine") {
+    tab.sort(function(a,b){return (a.position().left-b.position().left)+(a.position().top-b.position().top);});
     for (var i = 0; i < num; i++) {
       var id = tab[i].attr('id').slice(9);
-      $("#dnd-"+numQuest+"-"+id).val($("#draggable"+id).attr('set'));
+      $("#dnd-"+numQuest+"-"+id).val(i+""+$("#draggable"+id).attr('set'));
     }
   }
 }
