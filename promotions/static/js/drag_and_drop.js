@@ -56,6 +56,7 @@ function createInput(type,text,latex,file,hint,ancer,width,height,top,left,answe
 
   if(ancer == "true") {
     if(canva == "2-set" || canva == "4-set") {
+      console.log(answerSet);
       //If the box is ancered, we need to set the order's box (answerSet) for 2-set, 4-set and graduate line exercices
       $block.attr("set",answerSet);
       if(answerSet=="left") { $orderDisplay.css({'background': "#FFCC80"}); }
@@ -122,26 +123,26 @@ function changeCanvaRanking(toploop,canvaType){
   $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
 }
 
-function changeCanva2Set(toploop,canvaType,right,left) {
+function changeCanva2Set(toploop,canvaType,left,right) {
   canva = canvaType;
   numQuest = toploop;
 
   $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
 
-  createSet("right",canvaData.right);
-  createSet("left",canvaData.left);
+  createSet("left",left);
+  createSet("right",right);
 }
 
-function changeCanva4Set(toploop,canvaType,upperRight,upperLeft,downRight,downLeft) {
+function changeCanva4Set(toploop,canvaType,upperLeft,upperRight,downLeft,downRight) {
   canva = canvaType;
   numQuest = toploop;
 
   $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
 
-  createSet("upperRight",canvaData.upperRight);
-  createSet("upperLeft",canvaData.upperLeft);
-  createSet("downRight",canvaData.downRight);
-  createSet("downLeft",canvaData.downLeft);
+  createSet("upperLeft",upperLeft);
+  createSet("upperRight",upperRight);
+  createSet("downLeft",downLeft);
+  createSet("downRight",downRight);
 }
 
 function changeCanvaGraduatedLine(toploop,canvaType,numInter,begInter,endInter) {
@@ -171,20 +172,20 @@ function changeCanvaGraduatedLine(toploop,canvaType,numInter,begInter,endInter) 
     var currEndInter;
     if(i == 0) {
       currWidth = interWidth + (canvaWidth*0.1);
-      currBegInter = "PosInf";
+      currBegInter = "-∞";
       currEndInter = (begInter + ((i)*interSize));
     }
     else if ( i == numInter-1 ) {
       currWidth = interWidth + (canvaWidth*0.1)
       currBegInter = (begInter + ((i-1)*interSize));
-      currEndInter = "NegInf";
+      currEndInter = "∞";
     }
     else {
       currWidth = interWidth;
       currBegInter = (begInter + ((i-1)*interSize));
       currEndInter = (begInter + ((i)*interSize));
     }
-    var interSet = String("["+currBegInter+"-"+currEndInter+"[");
+    var interSet = String(currBegInter+";"+currEndInter);
 
     //The set of the interval
     var $set = $('<div id=interval'+i+' set='+interSet+' begin='+currBegInter+' end='+currEndInter+' class="dnd-interval-set"> </div>').droppable({

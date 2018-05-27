@@ -33,7 +33,7 @@
       %input#EndIntervalgraduatedLine.form-control{type: "number"}/
     .form-group
       %label{for: "NumberIntervalgraduatedLine"} Nombre d'intervalles
-      %input#NumberIntervalgraduatedLine.form-control{type: "number", min:"2", max:"20"}/
+      %input#NumberIntervalgraduatedLine.form-control{type: "number", min:"1", max:"20"}/
     %a#ValidateGraduatedLineInfo.btn.btn-primary Valider
 
 #BlockInfo.dnd-modal
@@ -51,7 +51,7 @@
         %input#TextBlockInfo.form-control{type: "text"}/
       #FileBlockInfoGroup.form-group
         %label{for: "FileBlockInfo"} Image :
-        %input#FileBlockInfo{type: "file"}/
+        %input#FileBlockInfo{type: "file", style: "color: transparent;"}/
         %img#FileBlockDisplay.dnd-modal-image{src: "#"}/
       .form-group
         %label{for: "HintBlockInfo"} Indication(s) pour l'étudiant en cas de mauvaise réponse:
@@ -60,7 +60,7 @@
         .form-check
           %label.form-check-label{for: "AncerBlockInfo"} Ancrage de la boite :
           %input#AncerBlockInfo.form-check-input{type :"checkbox"}/
-          %p.help-block L'activation de l'ancrage bloque la position de cette boite pour l'ensemble de la question.
+          %p.help-block L'activation de l'ancrage bloque la position de cette boite dans le canvas.
       %a#ValidateBlockInfo.btn.btn-primary Valider
 
 #ImageInfo.dnd-modal{style: "padding-top: 100px;"}

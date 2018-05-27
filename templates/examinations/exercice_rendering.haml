@@ -58,7 +58,7 @@
                   changeCanvaRanking("{{ toploop_counter0 }}","{{ answer.canva.type | safe }}");
               -elif answer.canva.type == "2-set"
                 :javascript
-                  changeCanva2Set("{{ toploop_counter0 }}", "{{ answer.canva.type | safe }}", "{{ answer.canva.right | safe }}","{{ answer.canva.left | safe }}");
+                  changeCanva2Set("{{ toploop_counter0 }}", "{{ answer.canva.type | safe }}", "{{ answer.canva.left| safe }}","{{ answer.canva.right | safe }}");
               -elif answer.canva.type == "4-set"
                 :javascript
                   changeCanva4Set("{{ toploop_counter0 }}", "{{ answer.canva.type | safe }}", "{{ answer.canva.upperLeft | safe }}","{{ answer.canva.upperRight | safe }}","{{ answer.canva.downLeft | safe }}","{{ answer.canva.downRight | safe }}");

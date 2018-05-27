@@ -108,8 +108,8 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         set: "",//correct set
         hint: "",//hint for the training
         ancer: "false",//can the block be moved?
-        width: 160,
-        height: 80,
+        width: 80,
+        height: 60,
         top: "",//top position in the wrapper
         left: "",//left position in the wrapper
       });
@@ -184,8 +184,8 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
           $("#addBlockFile").css("display", "inline-block");
           $("#addBlockGeneral").css("display", "inline-block");
 
-          $scope.createSet("right",question);
           $scope.createSet("left",question);
+          $scope.createSet("right",question);
 
           question["canva"].right="";
           question["canva"].left="";
@@ -199,10 +199,10 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
           $("#addBlockFile").css("display", "inline-block");
           $("#addBlockGeneral").css("display", "inline-block");
 
-          $scope.createSet("upperRight",question);
           $scope.createSet("upperLeft",question);
-          $scope.createSet("downRight",question);
+          $scope.createSet("upperRight",question);
           $scope.createSet("downLeft",question);
+          $scope.createSet("downRight",question);
 
           question["canva"].upperRight="";
           question["canva"].upperLeft="";
@@ -212,12 +212,17 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
         case "graduatedLine":
           $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
+          $("#addBlockText").css("display", "inline-block");
+          $("#addBlockMath").css("display", "inline-block");
+          $("#addBlockFile").css("display", "inline-block");
+          $("#addBlockGeneral").css("display", "inline-block");
+
           $("#GraduatedLineInfo").css("display", "block");
+          $("#ValidateGraduatedLineInfo").on("click", function(){$scope.setGraduatedLine(question);});
 
           $("#BeginIntervalgraduatedLine").val("");
           $("#EndIntervalgraduatedLine").val("");
           $("#NumberIntervalgraduatedLine").val("");
-          $("#ValidateGraduatedLineInfo").on("click", function(){$scope.setGraduatedLine(question);});
 
           question["canva"].numInter="";
           question["canva"].begInter="";
@@ -350,7 +355,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       var begInter = $("#BeginIntervalgraduatedLine").val();
       var endInter = $("#EndIntervalgraduatedLine").val();
 
-      if(begInter == "" || endInter == "" || numInter == "") { alert("Please fill in every inputs."); return; }
+      if(begInter == "" || endInter == "" || numInter == "") {alert("Please fill in every inputs."); return;}
 
       question.canva.numInter=numInter;
       question.canva.begInter=begInter;
@@ -360,14 +365,9 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       endInter = parseInt(endInter,10);
       numInter = parseInt(numInter,10);
 
-      if (numInter > 50 || numInter < 2) { alert("Choose a number of interval between 2 and 50."); return; }
-      else if (begInter >= endInter) { alert("The interval must be strictly increasing."); return;}
-      else { $("#GraduatedLineInfo").css("display", "none"); }
-
-      $("#addBlockText").css("display", "inline-block");
-      $("#addBlockMath").css("display", "inline-block");
-      $("#addBlockFile").css("display", "inline-block");
-      $("#addBlockGeneral").css("display", "inline-block");
+      if (numInter > 20 || numInter < 1) {alert("Choose a number of interval between 1 and 20."); return;}
+      else if (begInter >= endInter) {alert("The interval must be strictly increasing."); return;}
+      else {$("#GraduatedLineInfo").css("display", "none")};
 
       var interSize = Math.round(((endInter-begInter)/numInter)*100)/100;//The size of an interval
 
@@ -386,20 +386,20 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         var currEndInter;
         if(i == 0) {
           currWidth = interWidth + (canvaWidth*0.1);
-          currBegInter = "PosInf";
+          currBegInter = "∞";
           currEndInter = (begInter + ((i)*interSize));
         }
         else if ( i == numInter-1 ) {
           currWidth = interWidth + (canvaWidth*0.1)
           currBegInter = (begInter + ((i-1)*interSize));
-          currEndInter = "NegInf";
+          currEndInter = "-∞";
         }
         else {
           currWidth = interWidth;
           currBegInter = (begInter + ((i-1)*interSize));
           currEndInter = (begInter + ((i)*interSize));
         }
-        var interSet = String("["+currBegInter+"-"+currEndInter+"[");
+        var interSet = String(currBegInter+";"+currEndInter);
 
         //The set of the interval
         var $set = $('<div id=interval'+i+' set='+interSet+' begin='+currBegInter+' end='+currEndInter+' class="dnd-interval-set"> </div>').droppable({
@@ -546,10 +546,6 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
           console.log("Wrong type of block.");
       }
 
-      //$inputDisplay = $('<textarea type='+type+' class="dnd-textbox" id=textbox'+number+'></textarea>').change(function(){question["answers"][number]["latex"]=this.value});
-      //$inputDisplay = $('<input type='+type+' class="dnd-upload" id=upload'+number+'></input>').change(function(){$scope.readFile(this,question,number);});
-      //$img = $('<img id=img'+number+' src="#" class="dnd-image" alt="your image"></img>');
-
       //Switch the values
       switch(typeValue) {
         case "text":
@@ -586,6 +582,9 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
             question["answers"][number]["file"] = e.target.result;
           }
           break;
+
+          $img.on('mousedown', function() { $(this).parent().draggable("disable"); });
+          $img.on('mouseup', function() { $(this).parent().draggable("enable"); });
 
         default:
           console.log("Wrong type of block.");
