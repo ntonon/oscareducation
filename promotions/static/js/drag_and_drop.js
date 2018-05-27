@@ -22,11 +22,13 @@ function createInput(type,text,latex,file,hint,ancer,width,height,top,left,answe
     case "text":
       $inputDisplay = $('<textarea type='+type+' class="dnd-textbox-student" id=textbox'+number+' disabled="disabled"></textarea>');
       $inputDisplay.val(text);
+      $inputDisplay.appendTo($block);
       break;
 
     case "latex":
       $inputDisplay = $('<textarea type='+type+' class="dnd-textbox-student" id=textbox'+number+' disabled="disabled"> </textarea>');
       $inputDisplay.val(latex);
+      $inputDisplay.appendTo($block);
       break;
 
     case "file":
@@ -35,7 +37,11 @@ function createInput(type,text,latex,file,hint,ancer,width,height,top,left,answe
           document.getElementById('ImageInfo').style.display="block";
           document.getElementById("ImageZoom").src = this.src;
       });
+
       $inputDisplay.appendTo($block);
+
+      $inputDisplay.on('mousedown', function() { $block.draggable("disable"); });
+      $inputDisplay.on('mouseup', function() { $block.draggable("enable"); });
 
       break;
   }
@@ -44,7 +50,6 @@ function createInput(type,text,latex,file,hint,ancer,width,height,top,left,answe
   var $request = $('<input id=dnd-'+numQuest+'-'+number+' name=dnd-'+numQuest+'-'+number+' style="display: none;"> </p>');
 
   //Append of the elements to the div block
-  $inputDisplay.appendTo($block);
   $orderDisplay.appendTo($block);
   $request.appendTo($block);
 
@@ -56,7 +61,6 @@ function createInput(type,text,latex,file,hint,ancer,width,height,top,left,answe
 
   if(ancer == "true") {
     if(canva == "2-set" || canva == "4-set") {
-      console.log(answerSet);
       //If the box is ancered, we need to set the order's box (answerSet) for 2-set, 4-set and graduate line exercices
       $block.attr("set",answerSet);
       if(answerSet=="left") { $orderDisplay.css({'background': "#FFCC80"}); }
@@ -97,7 +101,7 @@ function order() {
     for (var i = 0; i < num; i++) {
       var id = tab[i].attr('id').slice(9);
       $("#order"+id).html(i);
-      $("#dnd-"+numQuest+"-"+id).val(i);
+      $("#dnd-"+numQuest+"-"+id).val(String(i));
     }
   }
   else if(canva=="2-set" || canva=="4-set") {
@@ -106,7 +110,7 @@ function order() {
       $("#dnd-"+numQuest+"-"+id).val($("#draggable"+id).attr('set'));
     }
   }
-  else if(canva=="GraduatedLine") {
+  else if(canva=="graduatedLine") {
     tab.sort(function(a,b){return (a.position().left-b.position().left)+(a.position().top-b.position().top);});
     for (var i = 0; i < num; i++) {
       var id = tab[i].attr('id').slice(9);
@@ -172,18 +176,18 @@ function changeCanvaGraduatedLine(toploop,canvaType,numInter,begInter,endInter) 
     var currEndInter;
     if(i == 0) {
       currWidth = interWidth + (canvaWidth*0.1);
-      currBegInter = "-∞";
-      currEndInter = (begInter + ((i)*interSize));
+      currBegInter = "-&infin;";
+      currEndInter = Math.round(100*(begInter + ((i)*interSize)))/100;
     }
     else if ( i == numInter-1 ) {
       currWidth = interWidth + (canvaWidth*0.1)
-      currBegInter = (begInter + ((i-1)*interSize));
-      currEndInter = "∞";
+      currBegInter = Math.round(100*(begInter + ((i-1)*interSize)))/100;
+      currEndInter = "&infin;";
     }
     else {
       currWidth = interWidth;
-      currBegInter = (begInter + ((i-1)*interSize));
-      currEndInter = (begInter + ((i)*interSize));
+      currBegInter = Math.round(100*(begInter + ((i-1)*interSize)))/100;
+      currEndInter = Math.round(100*(begInter + ((i)*interSize)))/100;
     }
     var interSet = String(currBegInter+";"+currEndInter);
 

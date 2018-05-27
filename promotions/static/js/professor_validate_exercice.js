@@ -37,8 +37,8 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         handles: "se",
         resize: function() {
           $scope.order(question);
-          question["answers"][number]["height"] = $(this).height();
-          question["answers"][number]["width"] = $(this).width();
+          question["answers"][number]["height"] = $(this).outerHeight();
+          question["answers"][number]["width"] = $(this).outerWidth();
         }
       });
 
@@ -143,7 +143,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         tab.sort(function(a,b){return (a.position().left-b.position().left)+(a.position().top-b.position().top) });
         for (var i = 0; i < num; i++) {
           $("#order"+tab[i].attr("number")).html(i);
-          question["answers"][tab[i].attr("number")].order = i;
+          question["answers"][tab[i].attr("number")].order = String(i);
         }
       }
       else if(canva=="2-set" || canva=="4-set") {
@@ -154,7 +154,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       else if(canva=="graduatedLine") {
         tab.sort(function(a,b){return (a.position().left-b.position().left)+(a.position().top-b.position().top) });
         for (var i = 0; i < num; i++) {
-          question["answers"][tab[i].attr("number")].order = i;
+          question["answers"][tab[i].attr("number")].order = String(i);
           question["answers"][tab[i].attr("number")].set = tab[i].attr("set");
         }
       }
@@ -386,18 +386,18 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         var currEndInter;
         if(i == 0) {
           currWidth = interWidth + (canvaWidth*0.1);
-          currBegInter = "∞";
-          currEndInter = (begInter + ((i)*interSize));
+          currBegInter = "-&infin;";
+          currEndInter = Math.round(100*(begInter + ((i)*interSize)))/100;
         }
         else if ( i == numInter-1 ) {
           currWidth = interWidth + (canvaWidth*0.1)
-          currBegInter = (begInter + ((i-1)*interSize));
-          currEndInter = "-∞";
+          currBegInter = Math.round(100*(begInter + ((i-1)*interSize)))/100;
+          currEndInter = "&infin;";
         }
         else {
           currWidth = interWidth;
-          currBegInter = (begInter + ((i-1)*interSize));
-          currEndInter = (begInter + ((i)*interSize));
+          currBegInter = Math.round(100*(begInter + ((i-1)*interSize)))/100;
+          currEndInter = Math.round(100*(begInter + ((i)*interSize)))/100;
         }
         var interSet = String(currBegInter+";"+currEndInter);
 
@@ -570,21 +570,26 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
           $block.attr("type","file");
 
           $inputDisplay = $('<input type="file" class="dnd-upload" id=upload'+number+'></input>').change(function(){$scope.readFile(this,question,number);});
-          $img = $('<img id=img'+number+' src="" class="dnd-image"></img>');
+          $img = $('<img id=img'+number+' src="#" class="dnd-image"></img>');
+
 
           $inputDisplay.appendTo($("#draggable"+number));
           $img.appendTo($("#draggable"+number));
+
+          $img.on('mousedown', function() { $(this).parent().draggable("disable"); });
+          $img.on('mouseup', function() { $(this).parent().draggable("enable"); });
 
           var reader = new FileReader();
           reader.readAsDataURL(fileValue[0]);
           reader.onload = function (e) {
             $("#img"+number).attr("src", e.target.result);
             question["answers"][number]["file"] = e.target.result;
+            $("#img"+number).click(function(){
+                document.getElementById("ImageInfo").style.display="block";
+                document.getElementById("ImageZoom").src = this.src;
+            });
           }
           break;
-
-          $img.on('mousedown', function() { $(this).parent().draggable("disable"); });
-          $img.on('mouseup', function() { $(this).parent().draggable("enable"); });
 
         default:
           console.log("Wrong type of block.");

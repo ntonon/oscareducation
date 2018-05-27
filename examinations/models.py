@@ -224,8 +224,9 @@ class Question(models.Model):
 
             num=0
             for res in response:
-                print(res["response"].encode('UTF-8')+"=="+str(answers[num]["order"])+""+str(answers[num]["set"]))
-                if res["response"].encode('UTF-8') == str(answers[num]["order"])+""+str(answers[num]["set"]):
+                print(res["response"].encode('utf-8'))
+                print(answers[num]["order"].encode('utf-8')+answers[num]["set"].encode('utf-8'))
+                if res["response"].encode('utf-8') == answers[num]["order"].encode('utf-8')+answers[num]["set"].encode('utf-8'):
                     response[num]["correct"] = 1
                 else:
                     response[num]["correct"] = 0

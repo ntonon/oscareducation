@@ -50,7 +50,7 @@
           -elif answer.type == "drag-and-drop"
             -with toploop_counter0=forloop.counter0
               #ImageInfo.dnd-modal{style: "padding-top: 100px;"}
-                %span.close{ng-click: "closeBlockInfoDisplay()"} ×
+                %span.close{onclick: "closeBlockInfoDisplay()"} ×
                 %img#ImageZoom.modal-content/
               #wrapper
               -if answer.canva.type == "ranking"
@@ -67,7 +67,7 @@
                   changeCanvaGraduatedLine("{{ toploop_counter0 }}", "{{ answer.canva.type | safe }}", "{{ answer.canva.numInter | safe }}", "{{ answer.canva.begInter | safe }}","{{ answer.canva.endInter | safe }}");
               -for ans in answer.answers
                 :javascript
-                  createInput("{{ ans.type | safe }}", "{{ ans.text | safe }}", "{{ ans.latex | safe }}", "{{ ans.file | safe }}", "{{ ans.hint | safe }}", "{{ ans.ancer | safe }}", "{{ ans.width | safe }}", "{{ ans.height | safe }}", "{{ ans.top | safe }}", "{{ ans.left | safe }}", "{{ ans.order | safe }}, {{ ans.set | safe }}");
+                  createInput("{{ ans.type | safe }}", "{{ ans.text | safe }}", "{{ ans.latex | safe }}", "{{ ans.file | safe }}", "{{ ans.hint | safe }}", "{{ ans.ancer | safe }}", "{{ ans.width | safe }}", "{{ ans.height | safe }}", "{{ ans.top | safe }}", "{{ ans.left | safe }}", "{{ ans.order | safe }}", "{{ ans.set | safe }}");
           -else
             =answer.type
 
