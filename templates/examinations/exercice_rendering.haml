@@ -51,7 +51,7 @@
             -with toploop_counter0=forloop.counter0
               #ImageInfo.dnd-modal{style: "padding-top: 100px;"}
                 %span.close{onclick: "closeBlockInfoDisplay()"} ×
-                %img#ImageZoom.modal-content/
+                %img#ImageZoom.modal-content{onclick: "closeBlockInfoDisplay()"}
               #wrapper
               -if answer.canva.type == "ranking"
                 :javascript

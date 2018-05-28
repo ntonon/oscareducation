@@ -24,7 +24,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       var $inputDisplay;
 
       //Draggable block
-      var $block = $('<div id=draggable'+number+' type="text" number='+number+' class="dnd-draggable ui-widget-content" set="center"> </div>').draggable({
+      var $block = $('<div id=draggable'+number+' number='+number+' class="dnd-draggable ui-widget-content" set="center"> </div>').draggable({
         containment: "#containment-wrapper",
         scroll: false,
         stack: ".dnd-draggable",
@@ -163,6 +163,8 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
     //Change the canva when the user select a new one
     $scope.changeCanva = function(question) {
       question["answers"]=[];
+
+      $("#AddBlock").css("display", "none");
       $("#containment-wrapper").remove();
 
       canva = $("#selectCanva").val()
@@ -170,19 +172,13 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         case "ranking":
           $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
 
-          $("#addBlockText").css("display", "inline-block");
-          $("#addBlockMath").css("display", "inline-block");
-          $("#addBlockFile").css("display", "inline-block");
-          $("#addBlockGeneral").css("display", "inline-block");
+          $("#AddBlock").css("display", "block");
           break;
 
         case "2-set":
           $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
 
-          $("#addBlockText").css("display", "inline-block");
-          $("#addBlockMath").css("display", "inline-block");
-          $("#addBlockFile").css("display", "inline-block");
-          $("#addBlockGeneral").css("display", "inline-block");
+          $("#AddBlock").css("display", "block");
 
           $scope.createSet("left",question);
           $scope.createSet("right",question);
@@ -194,10 +190,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         case "4-set":
           $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
 
-          $("#addBlockText").css("display", "inline-block");
-          $("#addBlockMath").css("display", "inline-block");
-          $("#addBlockFile").css("display", "inline-block");
-          $("#addBlockGeneral").css("display", "inline-block");
+          $("#AddBlock").css("display", "block");
 
           $scope.createSet("upperLeft",question);
           $scope.createSet("upperRight",question);
@@ -212,10 +205,8 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
         case "graduatedLine":
           $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
-          $("#addBlockText").css("display", "inline-block");
-          $("#addBlockMath").css("display", "inline-block");
-          $("#addBlockFile").css("display", "inline-block");
-          $("#addBlockGeneral").css("display", "inline-block");
+
+          $("#AddBlock").css("display", "block");
 
           $("#GraduatedLineInfo").css("display", "block");
           $("#ValidateGraduatedLineInfo").on("click", function(){$scope.setGraduatedLine(question);});
@@ -230,7 +221,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
           break;
 
         default:
-          console.log("Wrong type of canva.");
+          console.log("Reset canvas.");
       }
 
       counter = 0;
@@ -525,7 +516,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       var $block = $("#draggable"+number);
 
       //Reset the values
-      switch($block.attr("type")) {
+      switch(question["answers"][number]["type"]) {
         case "text":
           $("#textbox"+number).remove();
           question["answers"][number]["text"] = "";
@@ -550,7 +541,6 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       switch(typeValue) {
         case "text":
           question["answers"][number]["text"] = textValue;
-          $block.attr("type","text");
 
           $inputDisplay = $('<textarea type="text" class="dnd-textbox" id=textbox'+number+'></textarea>').change(function(){question["answers"][number]["latex"]=this.value});
           $inputDisplay.val(textValue);
@@ -559,7 +549,6 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
         case "latex":
           question["answers"][number]["latex"] = textValue;
-          $block.attr("type","latex");
 
           $inputDisplay = $('<textarea type="latex" class="dnd-textbox" id=textbox'+number+'></textarea>').change(function(){question["answers"][number]["latex"]=this.value});
           $inputDisplay.val(textValue);
@@ -567,11 +556,8 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
           break;
 
         case "file":
-          $block.attr("type","file");
-
           $inputDisplay = $('<input type="file" class="dnd-upload" id=upload'+number+'></input>').change(function(){$scope.readFile(this,question,number);});
           $img = $('<img id=img'+number+' src="#" class="dnd-image"></img>');
-
 
           $inputDisplay.appendTo($("#draggable"+number));
           $img.appendTo($("#draggable"+number));
@@ -736,6 +722,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
     $scope.onChangeQuestionType = function(topIndex, question) {
         if(question.type == "drag-and-drop") {
             question.answers = [];
+            question.topIndex = topIndex;
             question.canva = {
                 "type": "",
             };

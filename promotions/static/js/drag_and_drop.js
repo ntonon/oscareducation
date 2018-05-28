@@ -9,7 +9,7 @@ function createInput(type,text,latex,file,hint,ancer,width,height,top,left,answe
   var number = counter; //The number of the new block being added
   var $inputDisplay;
 
-  var $block = $('<div id=draggable'+number+' type="text" class="dnd-draggable ui-widget-content" set="center"> </div>').draggable({
+  var $block = $('<div id=draggable'+number+' class="dnd-draggable ui-widget-content" set="center"> </div>').draggable({
     containment: "#containment-wrapper",
     scroll: false,
     stack: ".dnd-draggable",
@@ -143,6 +143,8 @@ function changeCanva4Set(toploop,canvaType,upperLeft,upperRight,downLeft,downRig
 
   $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
 
+  console.log(upperLeft);
+
   createSet("upperLeft",upperLeft);
   createSet("upperRight",upperRight);
   createSet("downLeft",downLeft);
@@ -245,7 +247,7 @@ function createSet(pos,name) {
   var $set;
   var $input;
   if(pos=="right") {
-    $input = $('<input id="rightSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" value='+name+' style="text-align: center;" disabled="disabled"> </input>')
+    $input = $('<input id="rightSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" style="text-align: center;" disabled="disabled"> </input>')
     $set = $('<div id="right-set" class="ui-widget-content ui-state-default"> <div id='+pos+'> </div> </div>').droppable({
       accept: ".dnd-draggable",
       classes: {
@@ -263,7 +265,7 @@ function createSet(pos,name) {
     $input.appendTo()
   }
   else if (pos == "left") {
-    $input = $('<input id="leftSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" value='+name+' style="text-align: center;" disabled="disabled"> </input>')
+    $input = $('<input id="leftSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" style="text-align: center;" disabled="disabled"> </input>')
     $set = $('<div id="left-set" class="ui-widget-content ui-state-default"> <div id='+pos+'> </div> </div>').droppable({
       accept: ".dnd-draggable",
       classes: {
@@ -280,7 +282,7 @@ function createSet(pos,name) {
     });
   }
   else if (pos == "upperRight") {
-    $input = $('<input id="upRightSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" value='+name+' style="text-align: center;" disabled="disabled"> </input>')
+    $input = $('<input id="upRightSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" style="text-align: center;" disabled="disabled"> </input>')
     $set = $('<div id="upper-right-set" class="ui-widget-content ui-state-default"> <div id='+pos+'> </div> </div>').droppable({
       accept: ".dnd-draggable",
       classes: {
@@ -297,7 +299,7 @@ function createSet(pos,name) {
     });
   }
   else if (pos == "upperLeft") {
-    $input = $('<input id="upleftSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" value='+name+' style="text-align: center;" disabled="disabled"> </input>')
+    $input = $('<input id="upleftSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" style="text-align: center;" disabled="disabled"> </input>')
     $set = $('<div id="upper-left-set" class="ui-widget-content ui-state-default"> <div id='+pos+'> </div> </div>').droppable({
     accept: ".dnd-draggable",
       classes: {
@@ -314,7 +316,7 @@ function createSet(pos,name) {
     });
   }
   else if (pos == "downRight") {
-    $input = $('<input id="downRightSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" value='+name+' style="text-align: center;" disabled="disabled"> </input>')
+    $input = $('<input id="downRightSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" style="text-align: center;" disabled="disabled"> </input>')
     $set = $('<div id="down-right-set" class="ui-widget-content ui-state-default"> <div id='+pos+'> </div> </div>').droppable({
       accept: ".dnd-draggable",
       classes: {
@@ -331,7 +333,7 @@ function createSet(pos,name) {
     });
   }
   else if (pos == "downLeft") {
-    $input = $('<input id="downLeftSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" value='+name+' style="text-align: center;" disabled="disabled"> </input>')
+    $input = $('<input id="downLeftSetName" type="text" placeholder="nom de l\'ensemble" class="form-control" style="text-align: center;" disabled="disabled"> </input>')
     $set = $('<div id="down-left-set" class="ui-widget-content ui-state-default"> <div id='+pos+'> </div> </div>').droppable({
       accept: ".dnd-draggable",
       classes: {
@@ -347,7 +349,7 @@ function createSet(pos,name) {
       }
     });
   }
-
+  $input.val(name);
   $set.appendTo(document.getElementById("containment-wrapper"));
   $input.appendTo(document.getElementById(pos));
 }
