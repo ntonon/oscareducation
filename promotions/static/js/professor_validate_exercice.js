@@ -502,7 +502,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       //Retrieve the information of the form
       var typeValue = $("#TypeBlockInfo").val();
       var textValue = $("#TextBlockInfo").val();
-      var fileValue = $("#FileBlockInfo").prop('files');
+      var fileValue = $("#FileBlockDisplay").attr("src");
       var hintValue = $("#HintBlockInfo").val();
       var ancerValue = $("#AncerBlockInfo").prop("checked");
 
@@ -565,16 +565,13 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
           $img.on('mousedown', function() { $(this).parent().draggable("disable"); });
           $img.on('mouseup', function() { $(this).parent().draggable("enable"); });
 
-          var reader = new FileReader();
-          reader.readAsDataURL(fileValue[0]);
-          reader.onload = function (e) {
-            $("#img"+number).attr("src", e.target.result);
-            question["answers"][number]["file"] = e.target.result;
-            $("#img"+number).click(function(){
-                document.getElementById("ImageInfo").style.display="block";
-                document.getElementById("ImageZoom").src = this.src;
-            });
-          }
+          $("#img"+number).attr("src", fileValue);
+          question["answers"][number]["file"] = fileValue;
+          $("#img"+number).click(function(){
+              document.getElementById("ImageInfo").style.display="block";
+              document.getElementById("ImageZoom").src = this.src;
+          });
+
           break;
 
         default:
