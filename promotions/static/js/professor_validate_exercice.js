@@ -11,19 +11,19 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
     /////////////////////////////////////////////// DRAG AND DROP /////////////////////////////////////////////
 
-    var counter = 0;//Number of blocks added to the canva
-    var num = 0; //Number of blocks displayed on the canva
-    var tab = []; //The displayed blocks on the canva
-    var canva = "" //The canva type
+    var counter = 0;//Number of blocks added to the canvas
+    var num = 0; //Number of blocks displayed on the canvas
+    var tab = []; //The displayed blocks on the canvas
+    var canva = "" //The canvas type
 
 
-    //Create a draggable div and push it to tab
+    //Create a draggable block and append it to the containement wrapper
     $scope.createDraggableBlock = function(typeId, question, topIndex) {
       var number = counter; //The number of the new block being added
       var type; //The type of data of the block
-      var $inputDisplay;
+      var $inputDisplay;//The display of the content of the box
 
-      //Draggable block
+      //Create draggable block
       var $block = $('<div id=draggable'+number+' number='+number+' class="dnd-draggable ui-widget-content" set="center"> </div>').draggable({
         containment: "#containment-wrapper",
         scroll: false,
@@ -33,15 +33,17 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         }
       });
 
+      //Add resizable function
       $block = $block.resizable({
         handles: "se",
-        resize: function() {
+        resize: function() { //On resizing, retrieve the size of the box and change the value for the Yaml
           $scope.order(question);
           question["answers"][number]["height"] = $(this).outerHeight();
           question["answers"][number]["width"] = $(this).outerWidth();
         }
       });
 
+      //Create the display for the content of the box depending on the type
       switch(typeId) {
         case "text":
         case 0:
@@ -70,6 +72,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
           $img.appendTo($block);
 
+          //When clicking on the image, the draggable function is disabled
           $img.on('mousedown', function() { $(this).parent().draggable("disable"); });
           $img.on('mouseup', function() { $(this).parent().draggable("enable"); });
 
@@ -81,7 +84,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
       var $deleteButton = $('<a class=dnd-btn-del> <span class="glyphicon glyphicon-trash trash-icon"></span> </a>').click(function(){$scope.deleteDraggableBlock(number,question)});//delete button of the block
       var $paramButton = $('<a class=dnd-btn-param> <span class="glyphicon glyphicon-cog"></span> </a>').click(function(){$scope.openBlockInfoDisplay(number,question)});//param button of the block
-      var $orderDisplay = $('<p id=order'+counter+' class="dnd-display-order"> </p>');//order of the block (varies according to the canva)
+      var $orderDisplay = $('<p id=order'+counter+' class="dnd-display-order"> </p>');//order of the block (varies according to the canvas)
 
       //Append of the elements to the div block
       $inputDisplay.appendTo($block);
@@ -119,7 +122,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
     }
 
     //Display alert when deleting a block in order to
-    //Remove the block "block" from the canva and from tab
+    //Remove the block "block" from the canvas and from tab
     $scope.deleteDraggableBlock = function(number,question) {
       if (confirm("Etes vous sur de vouloir supprimer ce block ?")) {
         for (var i = 0; i < num; i++) {
@@ -135,7 +138,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       }
     }
 
-    //It varies according to the changeCanva
+    //It varies according to the canvas type
     //If it's ranking, it will display the rank of each block on their order element
     //If it's set, it will display the set of each block on their set element
     $scope.order = function(question) {
@@ -160,14 +163,16 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       }
     }
 
-    //Change the canva when the user select a new one
+    //Change the canvas when the user select a new one
     $scope.changeCanva = function(question) {
-      question["answers"]=[];
+      question["answers"]=[]; //On changing canvas delete all the previous informations retrieved
 
       $("#AddBlock").css("display", "none");
       $("#containment-wrapper").remove();
 
       canva = $("#selectCanva").val()
+
+      //According to the type of canvas, launch the right functions to set the environment
       switch(canva) {
         case "ranking":
           $('<div id="containment-wrapper" class="containment-wrapper"> </div>').appendTo(document.getElementById("wrapper"));
@@ -229,7 +234,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       num = 0;
     }
 
-    //Create set for set exercice
+    //Set the 2-set or 4-set type of canvas
     $scope.createSet = function(pos,question) {
       var $set;
       var $input;
@@ -341,12 +346,14 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       $input.appendTo(document.getElementById(pos));
     }
 
+    //Set the graduated line type of canvas.
     $scope.setGraduatedLine = function(question) {
       var numInter = $("#NumberIntervalgraduatedLine").val();
       var begInter = $("#BeginIntervalgraduatedLine").val();
       var endInter = $("#EndIntervalgraduatedLine").val();
 
-      if(begInter == "" || endInter == "" || numInter == "") {alert("Please fill in every inputs."); return;}
+      //If there are errors in filling the form, block it
+      if(begInter == "" || endInter == "" || numInter == "") {alert("Veuillez remplir le formulaire completement."); return;}
 
       question.canva.numInter=numInter;
       question.canva.begInter=begInter;
@@ -356,15 +363,16 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       endInter = parseInt(endInter,10);
       numInter = parseInt(numInter,10);
 
-      if (numInter > 20 || numInter < 1) {alert("Choose a number of interval between 1 and 20."); return;}
-      else if (begInter >= endInter) {alert("The interval must be strictly increasing."); return;}
+      //If there are errors in filling the form, block it
+      if (numInter > 20 || numInter < 1) {alert("Veuillez choisir un nombre d'intervalle entre 1 et 20 (compris)."); return;}
+      else if (begInter >= endInter) {alert("La ligne graduee est croissante, les intervalles doivent l'etre aussi."); return;}
       else {$("#GraduatedLineInfo").css("display", "none")};
 
       var interSize = Math.round(((endInter-begInter)/numInter)*100)/100;//The size of an interval
 
       numInter += 2;//+2 for the negative and positive infinite
 
-      var canvaWidth = $("#wrapper").width();//The width of the canva
+      var canvaWidth = $("#wrapper").width();//The width of the canvas
       var lineWidth = canvaWidth*1.8;//The total width of the line
 
       var interWidth = lineWidth/numInter;//The width of an interval in pixel
@@ -441,13 +449,14 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
       }
     }
 
+    //Open the modal for the creation or modification of a block
     $scope.openBlockInfoDisplay = function(number, question, topIndex) {
       $("#BlockInfo").css("display", "block");
 
       $("#FileBlockInfoGroup").css("display", "none");
       $("#TextBlockInfoGroup").css("display", "none");
 
-      $("#TypeBlockInfo").on("change", function(){
+      $("#TypeBlockInfo").on("change", function(){ //Show the good part of the form according to the type chosen
         switch($("#TypeBlockInfo").val()) {
           case "file":
             $("#TextBlockInfoGroup").css("display", "none");
@@ -490,14 +499,17 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         $("#AncerBlockInfo").prop("checked",(question["answers"][number]["ancer"] == "true"));//Set the ancer value
       }
 
+      //Set the on click function of the validate button to call the function with the right arguments
       $("#ValidateBlockInfo").off("click");
       $("#ValidateBlockInfo").on("click", function(){$scope.modifyDraggableBlock(number,question, topIndex);});
     }
 
+    //Close any modal
     $scope.closeBlockInfoDisplay = function() {
       $(".dnd-modal").css("display", "none");
     }
 
+    //Modify or create a box with all the possible functionalities
     $scope.modifyDraggableBlock = function(number, question, topIndex) {
       //Retrieve the information of the form
       var typeValue = $("#TypeBlockInfo").val();
@@ -578,7 +590,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
           console.log("Wrong type of block.");
       }
 
-      if(ancerValue) {
+      if(ancerValue) { //If ancer is activated, retrieve the position of the block and save it for the Yaml and disable the draggable function
         question["answers"][number]["ancer"] = "true";
         question["answers"][number]["left"] = $block.position().left;
         question["answers"][number]["top"] = $block.position().top;
@@ -604,12 +616,12 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         reader.readAsDataURL(input.files[0]);
         reader.onload = function (e) {
           if(number == -1) { // If the upload comes from the modal
-            $("#FileBlockDisplay").attr("src", e.target.result);
+            $("#FileBlockDisplay").attr("src", e.target.result); //Change the source of the image displayed
           }
           else { // If the upload comes from a block
-            question["answers"][number]["file"] = e.target.result;
+            question["answers"][number]["file"] = e.target.result; //Save the source image in the Yaml
             $("#img"+number).attr("src", e.target.result);
-            $("#img"+number).click(function(){
+            $("#img"+number).click(function(){ //Zoom on the image
                 document.getElementById("ImageInfo").style.display="block";
                 document.getElementById("ImageZoom").src = this.src;
             });
