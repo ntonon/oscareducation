@@ -74,7 +74,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
           //When clicking on the image, the draggable function is disabled
           $img.on('mousedown', function() { $(this).parent().draggable("disable"); });
-          $img.on('mouseup', function() { $(this).parent().draggable("enable"); });
+          $img.on('mouseleave', function() { $(this).parent().draggable("enable"); });
 
           break;
 
@@ -155,8 +155,9 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         }
       }
       else if(canva=="graduatedLine") {
-        tab.sort(function(a,b){return (a.position().left-b.position().left)+(a.position().top-b.position().top) });
+        tab.sort(function(a,b){return (a.position().left-b.position().left); });
         for (var i = 0; i < num; i++) {
+          console.log(i+"-"+tab[i].attr("number"));
           question["answers"][tab[i].attr("number")].order = String(i);
           question["answers"][tab[i].attr("number")].set = tab[i].attr("set");
         }
@@ -372,8 +373,8 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
       numInter += 2;//+2 for the negative and positive infinite
 
-      var canvaWidth = $("#wrapper").width();//The width of the canvas
-      var lineWidth = canvaWidth*1.8;//The total width of the line
+      var canvaWidth = $("#containment-wrapper").width();//The width of the canvas
+      var lineWidth = canvaWidth*0.9;//The total width of the line
 
       var interWidth = lineWidth/numInter;//The width of an interval in pixel
 
@@ -384,19 +385,19 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
         var currBegInter;
         var currEndInter;
         if(i == 0) {
-          currWidth = interWidth + (canvaWidth*0.1);
+          currWidth = interWidth + (canvaWidth*0.05) + 5;
           currBegInter = "-&infin;";
-          currEndInter = Math.round(100*(begInter + ((i)*interSize)))/100;
+          currEndInter = begInter + ((i)*interSize);
         }
         else if ( i == numInter-1 ) {
-          currWidth = interWidth + (canvaWidth*0.1)
-          currBegInter = Math.round(100*(begInter + ((i-1)*interSize)))/100;
+          currWidth = interWidth + (canvaWidth*0.05) + 5;
+          currBegInter = begInter + ((i-1)*interSize);
           currEndInter = "&infin;";
         }
         else {
           currWidth = interWidth;
-          currBegInter = Math.round(100*(begInter + ((i-1)*interSize)))/100;
-          currEndInter = Math.round(100*(begInter + ((i)*interSize)))/100;
+          currBegInter = begInter + ((i-1)*interSize);
+          currEndInter = begInter + ((i)*interSize);
         }
         var interSet = String(currBegInter+";"+currEndInter);
 
@@ -430,7 +431,7 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
         //Drawing the dash
         if ( i != numInter-1 ) {
-          $('<span id=dash'+i+' class="dnd-interval-dash" style="right: -1px;"> </span>').appendTo(document.getElementById("interval"+i));
+          $('<span id=dash'+i+' class="dnd-interval-dash" style="right: 0px;"> </span>').appendTo(document.getElementById("interval"+i));
         }
 
         //Adding the text
@@ -574,8 +575,10 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
           $inputDisplay.appendTo($("#draggable"+number));
           $img.appendTo($("#draggable"+number));
 
-          $img.on('mousedown', function() { $(this).parent().draggable("disable"); });
-          $img.on('mouseup', function() { $(this).parent().draggable("enable"); });
+          if(!ancerValue) {
+            $img.on('mousedown', function() { $(this).parent().draggable("disable"); });
+            $img.on('mouseleave', function() { $(this).parent().draggable("enable"); });
+          }
 
           $("#img"+number).attr("src", fileValue);
           question["answers"][number]["file"] = fileValue;
@@ -592,8 +595,8 @@ function validateExerciceController($scope, $http, $sce, $timeout, $location) {
 
       if(ancerValue) { //If ancer is activated, retrieve the position of the block and save it for the Yaml and disable the draggable function
         question["answers"][number]["ancer"] = "true";
-        question["answers"][number]["left"] = $block.position().left;
-        question["answers"][number]["top"] = $block.position().top;
+        question["answers"][number]["left"] = $block.css("left");
+        question["answers"][number]["top"] = $block.css("top");
         $block.draggable("disable");
       }
       else {

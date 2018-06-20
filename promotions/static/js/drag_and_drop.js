@@ -40,8 +40,10 @@ function createInput(type,text,latex,file,hint,ancer,width,height,top,left,answe
 
       $inputDisplay.appendTo($block);
 
-      $inputDisplay.on('mousedown', function() { $block.draggable("disable"); });
-      $inputDisplay.on('mouseup', function() { $block.draggable("enable"); });
+      if(!ancer){
+        $inputDisplay.on('mousedown', function() { $block.draggable("disable"); });
+        $inputDisplay.on('mouseleave', function() { $block.draggable("enable"); });
+      }
 
       break;
   }
@@ -56,8 +58,8 @@ function createInput(type,text,latex,file,hint,ancer,width,height,top,left,answe
   //Append of the div block to the container
   $block.appendTo(document.getElementById("containment-wrapper"));
 
-  var posTop = $block.parent().height()/3 + (Math.random()*($block.parent().height()/3)) -50;
-  var posLeft = $block.parent().width()/3 + (Math.random()*($block.parent().width()/3)) -50;
+  var posTop = $block.parent().height()/3 + (Math.random()*($block.parent().height()/3)) -50 +'px';
+  var posLeft = $block.parent().width()/3 + (Math.random()*($block.parent().width()/3)) -50 +'px';
 
   if(ancer == "true") {
     if(canva == "2-set" || canva == "4-set") {
@@ -81,7 +83,8 @@ function createInput(type,text,latex,file,hint,ancer,width,height,top,left,answe
   }
 
   $block.parent().css({position: 'relative'});
-  $block.css({'width': width, 'height': height, 'top': posTop+'px', 'left': posLeft+'px', 'position': 'absolute'});
+  console.log(posTop+" "+posLeft);
+  $block.css({'width': width, 'height': height, 'top': posTop, 'left': posLeft, 'position': 'absolute'});
 
   counter++;
   num++;
@@ -111,7 +114,7 @@ function order() {
     }
   }
   else if(canva=="graduatedLine") {
-    tab.sort(function(a,b){return (a.position().left-b.position().left)+(a.position().top-b.position().top);});
+    tab.sort(function(a,b){return (a.position().left-b.position().left);});
     for (var i = 0; i < num; i++) {
       var id = tab[i].attr('id').slice(9);
       $("#dnd-"+numQuest+"-"+id).val(i+""+$("#draggable"+id).attr('set'));
@@ -165,8 +168,8 @@ function changeCanvaGraduatedLine(toploop,canvaType,numInter,begInter,endInter) 
 
   numInter += 2;
 
-  var canvaWidth = $("#wrapper").width();//The width of the canva
-  var lineWidth = canvaWidth*1.8;//The total width of the line
+  var canvaWidth = $("#containment-wrapper").width();//The width of the canva
+  var lineWidth = canvaWidth*0.9;//The total width of the line
 
   var interWidth = lineWidth/numInter;//The width of an interval in pixel
 
@@ -177,19 +180,19 @@ function changeCanvaGraduatedLine(toploop,canvaType,numInter,begInter,endInter) 
     var currBegInter;
     var currEndInter;
     if(i == 0) {
-      currWidth = interWidth + (canvaWidth*0.1);
+      currWidth = interWidth + (canvaWidth*0.05) + 5;
       currBegInter = "-&infin;";
-      currEndInter = Math.round(100*(begInter + ((i)*interSize)))/100;
+      currEndInter = begInter + ((i)*interSize);
     }
     else if ( i == numInter-1 ) {
-      currWidth = interWidth + (canvaWidth*0.1)
-      currBegInter = Math.round(100*(begInter + ((i-1)*interSize)))/100;
+      currWidth = interWidth + (canvaWidth*0.05) + 5;
+      currBegInter = begInter + ((i-1)*interSize);
       currEndInter = "&infin;";
     }
     else {
       currWidth = interWidth;
-      currBegInter = Math.round(100*(begInter + ((i-1)*interSize)))/100;
-      currEndInter = Math.round(100*(begInter + ((i)*interSize)))/100;
+      currBegInter = begInter + ((i-1)*interSize);
+      currEndInter = begInter + ((i)*interSize);
     }
     var interSet = String(currBegInter+";"+currEndInter);
 
